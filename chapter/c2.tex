@@ -12,15 +12,16 @@
 本章中我们同时研究了参考模态和电机配置（包括电极导联数目和电极分布）两个主要因素。 最初，我们用各种电极配置通过正演计算仿真生成具有无穷远参考的标准脑电电位。 接下来，标准的无穷远参考下的脑电电位被变换为单点参考记录以及三种典型的重参考（LM，AR 和 REST）。 随后， 无穷远参考下的正演出的电位与其他参考下的相对误差计算出来，显然，这种误差取决于 电极数目和电极分布等因素。
 
 \section{仿真方法}
-\begin{figure}[h!]
+\begin{figure}%[h!]
 	\centering
-	\includegraphics[width=0.6\textwidth,natwidth=610,natheight=642]{pic/JNE/2.1.pdf}
+	%[width=0.6\textwidth,natwidth=610,natheight=642]
+	\includegraphics[width=15cm]{pic/JNE/figure1.png}
 	\caption{标准脑电电位生成，参考转换，相对误差定义的流程图。给定头模型和电极配置，无穷远参考电位正演生成作为基标准, 标准电位再被转换为不同参考的其他记录。最后，转换参考下的电位与基准电位的相对误差关于参考模态、电极配置和一些其他因素交叉比较。}
 	\label{2.1}
 \end{figure}
 仿真和分析流程如图\ref{2.1}。 简单地说，我们首先构造了2个三层头模型，分别是同心球和真实头形状。 偶极子源假设分布在皮层表面以及大脑三维容积栅格中。然后，一定量的电极按照“10-x”或者“GSN”分布匹配偶何在大脑头皮表面。 再者, 通过正演公式基于无穷远参考的标准电位被仿真得出并进一步转换为5种单点参考记录 (如 左耳(LE)/Fz/Cz/Pz/Oz) 和3种重参考技术 (LM/AR/REST)。最后，最后的参考模态和电机配置就是具有离标准电位最小相对电位偏差的一个。
 
-具体地，三层头模型包括大脑皮层、颅骨、头皮，其相对容积传导率分别为1，0.0125，1。对于同心球头形状 \citing{yao_method_2001,yao_d_high-resolution_2000}，对于头表面、颅骨内外表面的半径分别是1.0，0.92，0.87。 源空间由2600个离散偶极子均匀径向垂直分布于大脑皮层(半径=0.86)和1269 * 3正交偶极子均匀分布在皮层下区域的3维栅格中(r ⩽ 0.84)。 一共,同心球面头模型的偶极子数达到6407。另外，真是头模型基于MNI结构像模板ICBM152建立\citing{fonov_v_unbiased_2009,fonov_v_unbiased_2011}。在匹配头表电极之后，我们用边界元法\citing{kybic_j_common_2005}通过正演计算头表电位，用到工具包OpenMEEG\citing{gramfort_a_forward_2011}和 Brainstorm\citing{tadel_f_brainstorm_2011,symond_m_p_gamma_2005}。 三层表面（头表面、颅骨内外）每层由1922顶点组成，颅骨厚度设为4mm。源空间由放在所有皮层端点上的15002 * 3 正交偶极子组成。因此，真实头模型中共考虑45 006个偶极子
+具体地，三层头模型包括大脑皮层、颅骨、头皮，其相对容积传导率分别为1，0.0125，1。对于同心球头形状 \citing{yao_method_2001,yao_d_high-resolution_2000}，对于头表面、颅骨内外表面的半径分别是1.0，0.92，0.87。 源空间由2600个离散偶极子均匀径向垂直分布于大脑皮层(半径=0.86)和1269 * 3正交偶极子均匀分布在皮层下区域的3维栅格中(r$\approx$0.84)。 一共,同心球面头模型的偶极子数达到6407。另外，真是头模型基于MNI结构像模板ICBM152建立\citing{fonov_v_unbiased_2009,fonov_v_unbiased_2011}。在匹配头表电极之后，我们用边界元法\citing{kybic_j_common_2005}通过正演计算头表电位，用到工具包OpenMEEG\citing{gramfort_a_forward_2011}和 Brainstorm\citing{tadel_f_brainstorm_2011,symond_m_p_gamma_2005}。 三层表面（头表面、颅骨内外）每层由1922顶点组成，颅骨厚度设为4mm。源空间由放在所有皮层端点上的15002 * 3 正交偶极子组成。因此，真实头模型中共考虑45 006个偶极子
 
 \subsection{标准脑电电位生成}
 有了头模型和电极坐标，传递矩阵$\mathbf{K}$就可以计算出，大小为电极数$N_e$乘以偶极子源的个数$N_s$。给定单个时刻点所有偶极子源活动的强度$\mathbf{x}$，所有电极上的脑电电位可以通过如下公式得到
@@ -31,67 +32,69 @@
 \subsection{传感器电极噪声测试}
 实际中，不可避免地会有电极测量噪声混合进入到记录的脑电信号中。我们采用零均值多变量高斯分布生成电极测量噪声$e$，噪声可能产生于各种未知的源。因此，脑电生成模型\eqref{eq2.1}变为
 \begin{equation}\label{eq2.2}
-\tilde{\mathbf{v}_{\infty}}=\mathbf{v}_{\infty}+\mathbf{e},\mathbf{e}\sim{N(\mathbf{0},\mathbf{I}_{N_e})}
-SNR=10log_10(lVert\mathbf{v}_{\infty}rVert_2^2\div{\lVert\mathbf{e}\rVert_2^2})
+\begin{split}
+\tilde{\mathbf{v}_{\infty}}=\mathbf{v}_{\infty}+\mathbf{e},\mathbf{e}\sim{N(\mathbf{0},\mathbf{I}_{N_e})}\\
+SNR=10log_{10}(\lVert{\mathbf{v}_\infty}\rVert_2^2/\Vert{\mathbf{e}}\rVert_2^2)
+\end{split}
 \end{equation}
-这里，$\mathbf{0}$是一个$N_e$乘1的零向量，$\mathbf{I}_{N_e}$是$N_e$乘$N_e$的单位矩阵； SNR是干净脑电信号$\mathbf{v}_{\infty}$传感器电极噪声$\mathbf{e}$的能量比例，以分贝为单位；$\lVert·\rVert_2^2$指的是$\ell_2$模的平方。
+这里，$\mathbf{0}$是一个$N_e$乘1的零向量，$\mathbf{I}_{N_e}$是$N_e$乘$N_e$的单位矩阵； SNR是干净脑电信号$\mathbf{v}_{\infty}$传感器电极噪声$\mathbf{e}$的能量比例，以分贝为单位；$\lVert{\cdot}\rVert_2^2$指的是$\ell_2$模的平方。
 \subsection{电极放置}
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.6\textwidth,natwidth=610,natheight=642]{pic/JNE/figure2.png}
+	\includegraphics[width=15cm]{pic/JNE/figure2.png}
 	\caption{电极配置策略. (a) shows the five mono-polar reference electrodes, that is, LE, Fz, Pz, Oz, Cz and 2 mastoids (Lm, Rm) used for linked mastoids (LM). The table in (b) summarized the channel number (CN) and electre layouts where '10-20 c'—clinically used 10-20 system; '10-20 j'—international 10-20 system standardized by [20]; '10-10 c'—commercially available 10-10 system (Brain Products Co. Ltd, Germany); '10-10 n'—standard 10-10 system extended by [21]; '10-10 r' and '10-05 r'—10-10 and 10-05 system defined by [18]; 'GSN 129/257'—Geodesic Sensor Net polygon placement system innovated by [24]. (c) Shows the details of the electrode layouts.}
 	\label{2.2}
 \end{figure}
 我们研究了11种不同类型的电极数目和2种电极分布，前后二者都可能影响脑电电位的准确性。 电极数目是10, 16, 21, 32, 64, 85, 96, 128, 335通道使用的是“10-x”分布，和129、257通道，使用的是“GSN”电极分布，如图\ref{2.2}所示。 详细地，关于三维电极笛卡尔坐标的的来源，10，16和21 通道的取自10-20电极分布\citing{jasper_h_h_ten_1958}；32, 64, 96 和 128 电极 使用的 ‘10-10 c’
-分布，取自ActiCHamp 128Ch 标准 (Brain Products Co. Ltd, 德国); 129 和 257 通道取自 the HydroCel™ Geodesic Sensor Net E001 (Electrical Geodesics, Inc., 美国)； 64 通道 使用的是 ‘10-10 n’ 分布，85通道用的是 ‘10-10 r’ 分布， 335 通道的坐标是取自
+分布，取自ActiCHamp 128Ch 标准 (Brain Products Co. Ltd, 德国); 129 和 257 通道取自HydroCel™ Geodesic Sensor Net E001 (Electrical Geodesics, Inc., 美国)； 64 通道 使用的是 ‘10-10 n’ 分布，85通道用的是 ‘10-10 r’ 分布， 335 通道的坐标是取自
 10-05系统\citing{oostenveld_r_and_praamstra_p_five_2001}。
 \subsection{参考模态}
 一般，所有的参考转换过程可以用公式表示为
-\begin{equation}\label{2.3}
+\begin{equation}\label{eq2.3}
 \mathbf{v}_r=\mathbf{Tv}_{\infty}
 \end{equation}
 这里$\mathbf{v}_{\infty}$是无穷远参考下的脑电电位，$\mathbf{T}$指得是特定参考下的转换矩阵。 $\mathbf{v}_r$是转换为参考$r$时的脑电电位。
 \subsubsection{在线记录参考}
 单极记录参考的原理是从所有活跃电极上减去单极物理参考电极的电位，即,
-\begin{equation}\label{2.4}
+\begin{equation}\label{eq2.4}
 \mathbf{T}=\mathbf{T}_{r},\mathbf{T}_{r}=\mathbf{I}_{N_{e}}-\mathbf{1f^T},\mathbf{f}=[0,...,1,...,0]^T
 \end{equation}
-这里$\mathbf{1}$是一个$N_{e}$乘以1的单位向量，$\mathbf{f}$是一个是一个$N_{e}$乘以1的向量但只有一个非零元为1位于单极参考对应的行中，单极参考可能是左侧耳垂LE，Fz，Pz，Oz和Cz。
+这里$\mathbf{1}$是一个$N_{e}$乘以1的单位向量，$\mathbf{f}$是一个$N_e$乘以1的向量但只有一个非零元1位于单极参考对应的行中，单极参考可能是左侧耳垂LE，Fz，Pz，Oz和Cz。
 
 \subsubsection{重参考技术}
 重参考是基于测量的脑电电位的更进一步，在线记录参考过程已经固有的参与当中。
 
 连接耳参考 (LM)
-\begin{equation}\label{2.5}
+\begin{equation}\label{eq2.5}
 \mathbf{T}=\mathbf{(I-1f^T)T}_{r},\mathbf{f}=[0,...,0.5,...,0.5,...0]^T
 \end{equation}
 这里$f$是仅具有两个非零元0.5位于左右乳突对应行的零向量。
 
 平均参考 (AR)
-\begin{equation}\label{2.6}
-\mathbf{T}=\mathbf{(I-1f^T)T}_{r},\mathbf{f}=[1\div{N_e},...,1\div{N_e}]^T
+\begin{equation}\label{eq2.6}
+\mathbf{T}=\mathbf{(I-1f^T)T}_{r},\mathbf{f}=[1/{N_e},...,1/{N_e}]^T
 \end{equation}
-这里$\mathbf{f}$的所有元是$1\div{N_e}$.
+这里$\mathbf{f}$的所有元是$1/{N_e}$.
 
 Reference electrode standardization technique (REST)
 
-将等式\eqref{eq2.1}和等式\eqref{2.4}代入\eqref{2.3}，我们得到$\mathbf{v}_r=\mathbf{T}_{r}\mathbf{Kx}$。根据等效偶极子源原理\citing{yao_method_2001,yao_d_high-resolution_2000}，头表电位$\mathbf{v}_{\infty}$由源$x$通过传递矩阵$K$生成，等效地，也可以通过等效源$x_1$和传递矩阵$K_1$得到，即
-\begin{equation}\label{2.7}
+将等式\eqref{eq2.1}和等式\eqref{eq2.4}代入\eqref{eq2.3}，我们得到$\mathbf{v}_r=\mathbf{T}_{r}\mathbf{Kx}$。根据等效偶极子源原理\citing{yao_method_2001,yao_d_high-resolution_2000}，头表电位$\mathbf{v}_{\infty}$由源$x$通过传递矩阵$K$生成，等效地，也可以通过等效源$x_1$和传递矩阵$K_1$得到，即
+\begin{equation}\label{eq2.7}
 \mathbf{v}_{\infty}=\mathbf{Kx}=\mathbf{K}_1\mathbf{x}_1
 \end{equation}
 这里，$\mathbf{x}_1$可以是分布在二维皮层薄片栅格上覆盖了所有实际偶极子在内的等效源，也可以是与实际的源重叠的三维分布源，或者是在坐标系统远点上的多极源 \citing{yao_d_high-resolution_2000}。 对于REST，尽管正确的源$x$和正确的传递矩阵$K$是未知的，我们可以使用以为的等效源$\mathbf{x}_1$和相应的传递矩阵$\mathbf{K}_1$\citing{yao_method_2001,zhai_y_and_yao_d_study_2004}。在本章中，球面头模型和真实头模型分别用三维栅格上具有三个正交方向的偶极子源和皮层上偶极子具有固定的径向于皮层的方向作为$\mathbf{x}_1$。 因为脑电逆问题是参考无关的\citing{pascual-marqui_r_d_and_lehamann_d_topographic_1993,geselowitz_d_b_zero_1998}，$\mathbf{x}_1$的近似估计是
-\begin{equation}\label{2.8}
+\begin{equation}\label{eq2.8}
 \hat{x}_1=(\mathbf{T}_{r}\mathbf{K}_1)^{+}\mathbf{v}_r
 \end{equation}
-通过代入公式\eqref{2.8}和\eqref{2.3}代入到\eqref{2.7}，无穷远参考下的脑电电位$\mathbf{v}_{\infty}$可以近似地重建为
-\begin{equation}\label{2.9}
-\mathbf{v}_{rest}=\mathbf{K}_1\hat{\mathbf{x}_1}=\mathbf{K}_1(\mathbf{T}_{r}\mathbf{K}_1)^{+}\mathbf{T}_r\mathbf{v}_{\infty}
+通过代入公式\eqref{eq2.8}和\eqref{eq2.3}代入到\eqref{eq2.7}，无穷远参考下的脑电电位$\mathbf{v}_{\infty}$可以近似地重建为
+\begin{equation}\label{eq2.9}
+\mathbf{v}_{REST}=\mathbf{K}_1\hat{\mathbf{x}_1}=\mathbf{K}_1(\mathbf{T}_r\mathbf{K}_1)^+\mathbf{T}_r\mathbf{v}_\infty
 \end{equation}
-因此，REST的参考转换矩阵是$\mathbf{T}=\mathbf{K}_1(\mathbf{T}_{r}\mathbf{K}_1)^{+}\mathbf{T}_r$。
+因此，REST的参考转换矩阵是$\mathbf{T}=\mathbf{K}_1(\mathbf{T}_r\mathbf{K}_1)^+\mathbf{T}_r$。
 \subsection{头模型干扰测试}
 本质上，REST的效果依赖于头模型的准确度，因为$\mathbf{K}_1$从$\mathbf{K}$变换得到，随着$\mathbf{x}_1$与$x$之间的等效。假设$\mathbf{K}_1$近似于$\mathbf{K}$，我们感兴趣是否REST对头模型的扰动敏感。在以前的研究中，这种扰动是主观改变电极位置\citing{liu_q_estimating_2015}或者通过改变传导率的方式\citing{yao_method_2001,zhai_y_and_yao_d_study_2004}。 这种主观扰动在64通道(‘10-10 c’分布) 上重新检测，我们重新计算$\tilde{\mathbf{K}_1}$ 作为扰动的$\mathbf{K}_1$，用各种各样的结合，这包括两种头形状，11种颅骨传导率和5种源方向，这些在小节\ref{ch3.7}中列出。
 
-为了更加接近实际中的一般情况，$\mathbf{K}_1$是$\mathbf{K}$被给定一个客观的扰动，这种扰动来自于头模型、传导率、电极位置和其他在实际中难以定量描述的未知因素。把等式$\eqref{eq2.2}$和等式$\eqref{2.9}$
+为了更加接近实际中的一般情况，$\mathbf{K}_1$是$\mathbf{K}$被给定一个客观的扰动，这种扰动来自于头模型、传导率、电极位置和其他在实际中难以定量描述的未知因素。把等式$\eqref{eq2.2}$和等式$\eqref{eq2.9}$
 放在一起，就成为
 \begin{equation*}
 \mathbf{v}_{\infty}=\mathbf{Kx}
@@ -99,13 +102,15 @@ Reference electrode standardization technique (REST)
 \end{equation*}
 理想情况下，$\mathbf{K}$和$\mathbf{K}_1$都应该用精确的头模型和电极分布计算得到。这里，$\mathbf{K}$是用精确的头模型和真正的源活动计算得到，$\mathbf{K}_1$使用扰动的头模型和假设的等效源计算得到。为了增加扰动误差，零均值多变量高斯噪声$\mathbf{e}_1^j$注入到传递矩阵向量$\mathbf{k}_1^j$对应于$\mathbf{k}_1$的$j^{th}(j=1,...,N_s)$偶极子源，即为
 \begin{equation*}
-\tilde{\mathbf{k}_1^j}=\mathbf{k}_1^j+\mathbf{e}_1^j,\mathbf{e}_1^j\sim{N(\mathbf{0},\mathbf{I}_{N_e})}
-SNR_1=10log_10(\lVert\mathbf{k}_1^{j}\rVert_2^2\div{\lVert\mathbf{e}_1^{j}\rVert_2^2})
+\begin{split}
+\tilde{\mathbf{k}_1^j}=\mathbf{k}_1^j+\mathbf{e}_1^j,\mathbf{e}_1^j\sim{N(\mathbf{0},\mathbf{I}_{N_e})}\\
+SNR_1=10log_10(\lVert\mathbf{k}_1^{j}\rVert_2^2/{\lVert\mathbf{e}_1^{j}\rVert_2^2})
+\end{split}
 \end{equation*}
 这里$SNR_1$指的是$\mathbf{k}_1^j$对噪声能量的比例，单位为分贝dB。
 
 相应地，REST的重建模型就转换为
-\begin{equation}\label{2.9}
+\begin{equation}\label{eq2.10}
 \mathbf{v}_{\infty}=\mathbf{kx}
 \tilde{\mathbf{v}}_{\infty}=\tilde{\mathbf{K}}_{\infty}(\mathbf{T}_{r}\tilde{\mathbf{K}}_{\infty})^{+}\mathbf{T}_{r}\mathbf{v}_{\infty}
 \end{equation}
@@ -114,23 +119,23 @@ SNR_1=10log_10(\lVert\mathbf{k}_1^{j}\rVert_2^2\div{\lVert\mathbf{e}_1^{j}\rVert
 \subsection{影响比较}
 给定一个头模型，传递矩阵的值随着电极数目和电极分布而变化。通过设置单个偶极子源具有单位强度的活动而其他源强度为零的神经源活动，多通道脑电电位数值上就等于对应于这个偶极子源的传递矩阵向量。因此，脑电电位受到电极配置的影响。为了检查这种效应，考虑所有电极或某个头表局部区域上的电极的相对误差可以作为一种指标。被$j^{th}$个偶极子生成的电位的相对误差的计算如下
 \begin{equation*}
-re(j)=\sqrt{\sum_{i=1}^n(\mathbf{v}_r(i)-\mathbf{v}_{\infty}(i))^2}\div\sqrt{\sum_{i=1}^n(\mathbf{v}_{\infty}(i))^2}
+re(j)=\sqrt{\sum_{i=1}^n(\mathbf{v}_r(i)-\mathbf{v}_{\infty}(i))^2}/\sqrt{\sum_{i=1}^n(\mathbf{v}_{\infty}(i))^2}
 \end{equation*}
 这里$n$是电极数目(等于阵列大小)或者某个局部头皮区域上的电极数目，$\mathbf{v}_{\infty}$某种电极配置下的正演出的脑电电位，$\mathbf{v}_r$具有某种参考的脑电电位。为了避免源位置的偏差，我们计算大量偶极子源群体水平上的平均相对误差，而不是个体水平上每个偶极子的相对误差。在源空间或这感兴趣神经源区域，相对误差(RE)重新定义为
 \begin{equation*}
-RE=\sum_j=1^{N_d}re(j)\div{N_d}
+RE=\sum_{j=1}^{N_d}re(j)/{N_d}
 \end{equation*}
 这里$N_d$指的是整个源空间上或者某个感兴趣源区域的偶极子源的个数。 另外，标准偏差(SD)的计算公式是
 \begin{equation*}
-SD=\sqrt{\sum_j=1^{N_D}(re(j)-RE)^2\div{N_d-1}}
+SD=\sqrt{\sum_{j=1}^{N_d}(re(j)-RE)^2/(N_d-1)}
 \end{equation*}
 以计算关于偶极子源位置的某种因素的鲁棒性。
 
 \section{结果}
-比较参考变换前后的相对误差，我们旨在发现采集的脑电电位如何受到感兴趣的因素的影响。在本小节中，首先，所有电极上的相对误差关于所有的参考模态这个因素进行比较；然后，电极数目和电极分布的效果被分析; 再者，我们总结了关于偶极子源位置方向和电极噪声相对误差比较结果；最后，我们描述了使用真实头模型电极数目这一因素的影响。在总结结果之前，我们声明1）两种头模型是按照完全一致的仿真和分析流程进行的；2)由于两种头模型的结果十分相似，图\ref{2.3,2.4,2.6,2.7,2.8} 仅仅是三层同心球面模型的结果, 图\ref{2.5,2.9}  展示了两种头模型关于电极分布和头模型扰动的比较结果。
+比较参考变换前后的相对误差，我们旨在发现采集的脑电电位如何受到感兴趣的因素的影响。在本小节中，首先，所有电极上的相对误差关于所有的参考模态这个因素进行比较；然后，电极数目和电极分布的效果被分析; 再者，我们总结了关于偶极子源位置方向和电极噪声相对误差比较结果；最后，我们描述了使用真实头模型电极数目这一因素的影响。在总结结果之前，我们声明1）两种头模型是按照完全一致的仿真和分析流程进行的；2)由于两种头模型的结果十分相似，图\cref{2.3,2.4,2.6,2.7,2.8}仅仅是三层同心球面模型的结果, 图\cref{2.5,2.9}展示了两种头模型关于电极分布和头模型扰动的比较结果。
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.6\textwidth,natwidth=610,natheight=642]{pic/JNE/figure3.png}
+	\includegraphics[width=15cm]{pic/JNE/figure3.png}
 	\caption{Potential relative error as to reference montages. To differentiate the two 64-channels, '64c' and '64n' hereafter mean 64 channels with '10-10 c' and '10-10 n' layout, respectively. The color in each square corresponds to the RE (in percentage) in the colorbar. The RE is the mean of potential relative errors by repeated simulation with 6407 dipoles individually activated. The standard deviation (SD) of the relative errors over 6407 dipoles are shown in figure 4, especially for AR and REST. Topographies with the same colorbar show the effects (RE in percentage) of all the reference montages compared with infinity reference (IR).}
 	\label{2.3}
 \end{figure}
@@ -142,7 +147,7 @@ SD=\sqrt{\sum_j=1^{N_D}(re(j)-RE)^2\div{N_d-1}}
 使用以10为底的log尺度，因此明显地AR具有比REST更高的相对误差，不论是在所有电极上还是致密阵列的部分电极上。 在稀疏阵列的部分电极上，REST的相对误差在21和32通道时还比AR小很多；在10和16通道的电极数目下，REST的相对误差较大但还是比AR的相对误差要小。 这说明REST甚至能够在十分稀疏的阵列中取得比AR更好的效果。REST比AR较小的相对误差不仅表现在所有电极上还表现在部分电极上。这表明REST不受电极数目的影响总是在矫正脑电电位上具有比AR更好的效果。
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.6\textwidth,natwidth=610,natheight=642]{pic/JNE/figure4.png}
+	\includegraphics[width=15cm]{pic/JNE/figure4.png}
 	\caption{Potential relative error as to channel number. The charts separated by the dash lines show the REs of all arrays (10-335), sparse array (≤32) and dense array (≥64), respectively. The Y axes are displayed in 10-base logarithm scale. The REs and SDs (error bar) are the mean and standard deviation of the relative error of the potentials over all sensors, or a partial sensors region.}
 	\label{2.4}
 \end{figure}
@@ -152,7 +157,7 @@ AR的相对误差没有随着电极数目的增多呈现线性下降的趋势。
 \subsection{电极分布的影响}
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.6\textwidth,natwidth=610,natheight=642]{pic/JNE/figure5.png}
+	\includegraphics[width=15cm]{pic/JNE/figure5.png}
 	\caption{Potential relative error as to electrodes layout. The RE is shown in 10-base logarithm scale, while the prefix 's' and 'r' in the horizontal axis mean the spherical and realistic head model used in simulation, respectively. The legend on the right shows '10-x' layout with 'BP128', 'EGI129' setups and 'GSN' layout with 'EGI257', 'BP335' setups. Each setup is displayed on the spherical and realistic head surfaces with the yellow dots representing the electrode position.}
 	\label{2.5}
 \end{figure}
@@ -166,7 +171,7 @@ AR的相对误差没有随着电极数目的增多呈现线性下降的趋势。
 和 OD生成的脑电电位的相对误差分别是顺次从左顶端到右下端柱状图中画出。REST和AR的相对误差分别是显示为蓝色和黄色。 总体上，不论偶极子源分布于哪个脑区，REST总能产生比AR更小的相对误差。
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.6\textwidth,natwidth=610,natheight=642]{pic/JNE/figure6.png}
+	\includegraphics[width=15cm]{pic/JNE/figure6.png}
 	\caption{Potential relative error as to dipole source position. The semi-sphere shows the coordinates system and the source space of 3-layer concentric spherical head model. XYZ axes are oriented from the origin to the nasion, towards to the left ear, and directed to the vertex, separately. RE and SD (error bar) are the mean and standard deviation of the potential relative error over all sensors with partial dipoles in one source region individually activated, respectively.}
 	\label{2.6}
 \end{figure}
@@ -176,7 +181,7 @@ AR的相对误差没有随着电极数目的增多呈现线性下降的趋势。
 中如果把二维电极分布转换到球面或者实际头模型如图\ref{2.5}的三维电极分布，我们发现左右电极区域完美的对称性，前后电极区域很好但是不很完美的对称性，上下电极区域特别差的对称性。另外，关于偶极子源各个方向的上相似的相对误差表明了REST能够鲁棒地矫正脑电电位。AR在径向和Z反向上比XY方向上大得多的相对误差可能警示我们AR受到偶极子源活动方向的制约但可能只适合于对于水平横断面上活动的偶极子。
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.6\textwidth,natwidth=610,natheight=642]{pic/JNE/figure7.png}
+	\includegraphics[width=15cm]{pic/JNE/figure7.png}
 	\caption{Potential relative error as to source orientation. 3D plot displays the radial orientation of cortical dipoles in blue diamonds and XYZ three orthogonal directions of grid dipoles in red diamonds, respectively. RE and SD (error bar) are the mean and the standard deviation of potential relative error over all sensors with cortical dipoles or grid dipoles individually activated.}
 	\label{2.7}
 \end{figure}
@@ -186,22 +191,21 @@ AR的相对误差没有随着电极数目的增多呈现线性下降的趋势。
 可能比AR对传感器电极噪声具有更大的敏感性; (2) 如果脑电混合有很小的噪声时，REST还比AR具有优势，应该会优选 (3) 由于通过简单的平均起到的去噪效应，AR也可能适用于更高噪声的情形。
 \begin{figure}[h!]
 	\centering
-	\includegraphics[width=0.6\textwidth,natwidth=610,natheight=642]{pic/JNE/figure8.png}
+	\includegraphics[width=15cm]{pic/JNE/figure8.png}
 	\caption{Potential relative error as to sensor noise. RE is the mean of potential relative error over all sensors with all dipole sources individually activated. (a) the effect of REST; (b) the effect of AR.}
 	\label{2.8}
 \end{figure}
-
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=15cm]{pic/JNE/figure9.png}
+	\caption{Potential relative error as to head model. (a) The two head models. (b) The REs of potentials generated by the two head models. (c) The effects of perturbated 'r REST' on '64 c' electrodes setup by using different skull conductivities, head shapes, source configuration; the black bar shows 6 source configurations where white arrows display the orientations of dipole source: (1) 17 volume layers and 15 765 * 3 orthogonal dipoles (2) equivalent distributed source layer with 2600 radial cortical dipoles and 400 dipoles perpendicularly to the transverse plane, (3) 1269 * 3 orthogonal volume dipoles, (4) the combination of (2) and (3), (5) 15 002 radial cortical dipoles, and (6) 15 002 * 3 orthogonal cortical dipoles. The prefix of REST in the table, 's, r' means head shape; 'f, v, fv' means 'cortical surface dipoles', 'volume dipoles', and 'surface and volume dipoles', separately; 'r, o' as the third letter denotes radial and orthogonal orientation, respectively. (d) the results of perturbated 'r REST' by injecting noise to the lead field.}
+	\label{2.9}
+\end{figure}
 \subsection{头模型的影响}
 \label{ch3.7}
 图\ref{2.9}(a) 显示了三层同心球面模型（s）和ICBM152实际头模型（r）。对于这两种头模型，我们采用相同的仿真和分析流程。 REST和AR基于这两种头模型生成的脑电电位相对误差比较对比如图\ref{2.9}(b)所示。红色紫色虚线之间大的间隙证明对于所有电极数目的情况，‘r REST’依然能够获得比‘r AR’低得多的相对误差。
 这表明REST的合理性可能不取决于头形状的复杂程度。 为了检查是否REST依赖于头形状的准确程度，颅骨传导率和源空间配置情况，当这三个因素的正确值对于接受脑电记录的被试来说均未知的情况下，无穷远参考下的脑电电位通过使用真实头形状，颅骨相对于大脑传导率设置为0.0125，源配置如图\ref{2.9}(c)的黑色横条中的(1)所示，但是使用REST重建脑电电位时候用的是各种各样因素的组合，例如头形状可能是球形或者真实的(‘s’, ‘r’)， 颅骨对大脑传导率设置为(0.0001, 0.0005, 0.0016, 0.0032, 0.0063, 0.0125, 0.025, 0.05, 0.1, 0.5, 1)，源空间配置如图\ref{2.9}c中的(2)–(6)所示。 显然，REST比AR的优越性可以在简单的球面头形状，颅骨对大脑传导率为0.0001，源空间配置为 (2)–(6)中十分不同情况都能得到保持。 我们观察到合理的结果：REST的相对误差随着仿真中对头形状、颅骨脑相对传导率，源空间配置的更好近似而减小。为了模拟不精确头模型更一般的情形，我们通过注入噪声检查了“r REST”受到头模型扰动的影响，结果如图\ref{2.9}(d)中所示。 显然，尽管有两倍(-3dB)的噪声注入到REST用的传递矩阵$\mathbf{K}_1$,‘r
 REST’仍能够比‘r AR’有更小的误差。 总之，这些结果可能表明REST对头模型的扰动不敏感，在使用不精确的头模型时还可以保持其优势。
-\begin{figure}[h!]
-	\centering
-	\includegraphics[width=0.6\textwidth,natwidth=610,natheight=642]{pic/JNE/figure9.png}
-	\caption{Potential relative error as to head model. (a) The two head models. (b) The REs of potentials generated by the two head models. (c) The effects of perturbated 'r REST' on '64 c' electrodes setup by using different skull conductivities, head shapes, source configuration; the black bar shows 6 source configurations where white arrows display the orientations of dipole source: (1) 17 volume layers and 15 765 * 3 orthogonal dipoles (2) equivalent distributed source layer with 2600 radial cortical dipoles and 400 dipoles perpendicularly to the transverse plane, (3) 1269 * 3 orthogonal volume dipoles, (4) the combination of (2) and (3), (5) 15 002 radial cortical dipoles, and (6) 15 002 * 3 orthogonal cortical dipoles. The prefix of REST in the table, 's, r' means head shape; 'f, v, fv' means 'cortical surface dipoles', 'volume dipoles', and 'surface and volume dipoles', separately; 'r, o' as the third letter denotes radial and orthogonal orientation, respectively. (d) the results of perturbated 'r REST' by injecting noise to the lead field.}
-	\label{2.9}
-\end{figure}
 
 \section{讨论}
 以前的研究已经意识到以标准化脑电记录中立参考估计和电极分布的重要性。例如，脑电数据的获取中双极、单极、平均参考的方法之间相互比较\citing{osselton_j_w_acquisition_1965}, 这最早可以追溯到1965年； Yao提出了REST以近似获取无穷远参考\citing{yao_method_2001}； Quanying
