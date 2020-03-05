@@ -1,7 +1,248 @@
 \chapter{单极参考的统计学：推导及其属性}
 
 \section{引言}
+在本章中，我们通过数学证明发现（1）任何脑电参考遵守将理想无穷远参考下多通道脑电电位的线性转换这一广义形式； （2）平均参考（AR），参考点击标准化技术（REST）以及它的正则化版本(rREST) 实际上解决了线性逆问题，该问题可以通过最大似然估计或者贝叶斯理论推出，然而，REST比AR采用了更加有意义的先验或者利用了容积传导的限制；我们首次提出 REST 也是单点参考的一种，允许我们通过统一的公式符号定义出单点参考的一般性家族形式；（4）单点参考一些共同属性是“无记忆性”，“秩缺1”和“正交投影中心化”； （5）我们也首次提出rREST提供了最优的插值功能，该功能可以在参考通道丢失或者丢弃坏道时使用。
+这些推导和属性意味着（a）任何两个单点参考可以相互转换，连续多次进行单点参考不会累积误差 (b) 无论脑电数据之前采用了那种单点参考，the 脑电参考问题的最小模解是REST and AR，分别对应是否考虑了容积传导效用；（c）最大似然估计和贝叶斯理论证明了REST的理论优势。我们也讨论了AR和REST的优势和限制以便于读者对其进行正确使用。
 
-\section{结果}
+\section{研究背景}
+本章中我们给出了详细的数学证明和一些新的理论结果，作为对脑电参考综述文章\citing{yao_which_2019}的补充。 在脑电参考的综述文章中，它总结了脑电参考技术的最新的成果。 当讨论一些当前的话题时，显然有必要总结参考问题新的统计学方法，因为统计学方法是描述无穷远电位问题估计的最优最适合的证明材料。我们建立了脑电单极参考家族，推导了新的最大固然估计量，用公式表达一些引人注目的属性，并比较了首次表述在\cite{hu_unified_2018}中线性逆问题中的相关的贝叶斯估计量。
 
+\subsection{脑电参考问题起源}
+头表上参考电极和所有的活跃电极能够记录到所有神经源活动的线性叠加的活动。这意味着参考电极上记录到的参考信号和活跃电极上记录得到的信号有关联。 尽管实际中不可能真正找到无穷远参考，具有无穷远参考的传递矩阵是在数学上是可以求解得到的。 根据对麦克斯韦方程的准静态估计\citing{gulrajani_bioelectricity_1998}，具有无穷远参考的脑电电位$\mathbf{\phi}与神经源电流$\mathbf{j}$的关系是
+\begin{equation}label{4.1}
+\mathbf{\phi}=\mathbf{K}_{\infty}\mathbf{j}
+\end{equation}
+这里$\mathbf{K}_{\infty}$成为传递矩阵，表示了无穷远参考下的正演模型，$\mathbf{\phi}$是具有无穷远参考的理想脑电电位，$\mathbf{j}$是等效神经源电流\citing{plonsey_considerations_1967}。 脑电电位是衰减和混合的神经活动，这是由于头组织例如头皮、颅骨、大脑的等部分的异质传导率导致的。 容积传导模型\eqref{4.1} 得到脑电研究领域学者的公认，并视为是正确的无论哪种头表参考被使用，因为改变参考仅仅意味着参考修改了传递矩阵。
+\subsection{以前的尝试和最新进展}
+为了找到最优的参考估计方法，以前引人注目的办法是进行基于某个头表参考电极的在线记录，例如基于Cz, Fz, Oz 和 FCz等电极，以及后来采用另一个参考的离线计算（重参考）。 这些例子是连接乳突参考(LM)\citing{gibbs_electroencephalogram_1936,faux_preservation_1990}，平均参考(AR)\citing{goldman_clinical_1950,offner_eeg_1950}，参考电极标准化技术(REST)\citing{yao_method_2001}，正则化的参考电极标准化技术(rREST)\citing{hu_unified_2018}。 这些全部都可以称为单极参考\citing{hu_how_2018}，意味着所有的活跃电极都参考到唯一的参考信号。 相反，有学者也提出了非单极参考，例如双极参考记录\citing{berger_uber_1929,niedermeyer_electroencephalography_2005}和头表拉普拉斯\citing{hjorth_-line_1975,pascual-marqui_current_1988,perrin_errata_1989}。
+
+不难看出在线记录参考电极或者离线重参考的参考信号都仅仅是对理想无穷远参考下的脑电电位$\mathbf{\phi}$的线性变换。近年来，AR
+和REST已成为最广泛采用的两个参考。AR的正当理由是如果头可以模拟为分层球面，其中囊括电流源并各向同性地传播，头表面的离散电位积分就是零\citing{bertrand_theoretical_1985}。 REST是一种利用如\eqref{4.1}中的正演头模型和等效源模型\citing{Yao 2001}来近似地重建电位$\mathbf{\phi}$。 一个最新进展是rREST，其可以通过广义交叉验证准则在估计参考的同时处理去噪问题\citing{hu_unified_2018}。 在rREST提出的同一篇文章中还发现基于被试群体的传递矩阵能产生比球面传递矩阵更好的效果。 有如此多各种各样的单极参考供使用，显然需要一种统一的模型賴分析参考技术之间的内在联系同时比较它们的属性。
+
+\subsection{存在的问题和思路}
+REST的提出基于这样的事实：无论脑电记录采用的是哪种参考，最终脑电活动是由相同的神经源生成。REST的引入使得人们开展日益增多的比较研究，重点关注不同的参考怎样影响实验数据分析 \citing{bonfiglio_cortical_2013,tian_why_2013,kugiumtzis_direct_2015,chella_impact_2016,mumtaz_comparative_2018}。 然而，我们认为仅仅开展经验数据分析是不完全的，一些问题依然没有模糊没有得到回答。例如：如何将所有的参考转换统一到单个模型中？ 如果可以，这种模型能否反映出各种参考之间的某种联系？是否所有的单点参考相关联？ 是否REST一种单点参考，可能带有此前使用其他参考的影响？ 所有的单点参考之间具有怎样的联系或共同特点？ 是否有可能找到无穷远参考的理想无偏的估计量？AR 与 REST的统计学解释是什么？ 这些问题当我们整理脑电参考问题的综述\citing{yao_which_2019}时候由然而出。
+
+为了回答这些问题，我们研究发现单点参考总是将参考与无穷远处的多通道脑电数据矩阵秩减一。因此，从奇异的参考变换矩阵估计满秩的理想电位是一个欠定的或秩亏损的线性回归问题\citing{noauthor_mardia_nodate,magnus_matrix_2007}。 因此，这是一个不同本质的逆问题但是却与源定位问题相关。幸运地是，解决这些问题的必要工具例如与满秩减一矩阵的Moore–Penrose伪逆相关的研究
+已经发展出来\citing{meyer_generalized_1973,trenkler_generalisation_2000,baksalary_revisitation_2003}。
+
+在接下来，我们提出脑电参考问题的广义形式，证明了REST是一种特殊的单点参考，推广了可能为单点参考的家族，总结它们的一些常用属性，最后从最大似然估计和贝叶斯理论推导出AR和RESt（Table 1）。
+
+\section{参考问题的广义形式}
+在实际中人们从未观测到$\mathbf{\phi}$，因为无穷远参考在实际中是不可获得的。我们能观测得到的而是参考变换后的数据$\mathbf{x}$，它可能是单极参考记录$\mathbf{v}_r$也可能是非单极参考记录，如双极记录得到的电流和头表拉普拉斯变换得到的电流源密度。 每种类型参考后的数据是都是一种线性变换，通过对脑电数据$\mathbf{\phi}$和传感器电极噪声$\mathbf{\epsilon}$之和左乘以参考变换矩阵$\mathbf{T}_o$。 所以，参考问题的广义形式是：
+\begin{equation}\label{4.2}
+\mathbf{x}=\mathbf{T}_{o}\mathbf{{\phi+\epsolon}=\mathbf{T}_{o}\mathbf{\phi}+\mathbf{\epsolon}_o
+\end{equation}
+这里$\mathbf{T}_o$是可观测或已知的非随机性矩阵，$\mathbf{\phi}$是无穷远参考下的理想脑电电位，是一个确定性的但是未知的向量，$\mathbf{\epsolon}$是不可观测到的随机传感器电极噪声扰动。显然，在解决脑电参考问题\eqref{4.2}估计$\mathbf{\phi}$时，这是在解答一个欠定的线性回归问题。 
+
+不是一般性，$\mathbf{\phi}$和$\mathbf{\epsolon}$都假设具有多变量正态分布。如果传感器电极噪声具有电极之间的独立同分布先验，
+参考变换之后的数据中的电极噪声的协方差就是$\Sigma_{\mathbf{\epislon}_o\mathbf{\epislon}_o}=\sigma^2\mathbf{T}_{o}\mathbf{T}_{o}^T$因为在脑电记录中参考效应也同时对噪声起作用\citing{pascual-marqui_low_1994}。
+
+\section{单点参考家族}
+尽管$\mathbf{T}_{o}$可以是双极记录时的一阶差分算子，也可以是头表拉普拉斯变换时的二阶差分算子。二者都度量了脑电记录的信号离真正的电位相差多远，
+因此我们将重点把$\mathbf{T}_{o}$视为单极参考算子$\mathbf{T}_{r}=\mathbf{T}_{r}$，单极参考变换就是：
+\begin{equation}\label{4.3}
+\mathbf{v}_{r}=\mathbf{T}_{r}\mathbf{\phi}+\mathbf{\epislon}_r
+\end{equation}
+
+单极参考（UR）记录就是所有的电极被参考到唯一的物理参考电极或者虚拟的数字参考。 物理参考通常是在线记录配置中放在身体表面的单个电极（例如Cz, Fz, Oz and FCz）。 虚拟参考是所有电极上脑电记录的线性结合，通常是在脑电数据采集之后在离线预处理时得到。虚拟参考的典型例子是LM，AR和REST。\eqref{4.3}中的参考算子对单极参考家族具有相同的结构\citing{hu_how_2018}，
+\begin{equation}\label{4.4}
+\mathbf{T}_{r}=\mathbf{I}_{N_c}-\mathbf{1f}_r^T
+\end{equation}
+这里$\mathbf{f}_r$包含了所有电极上的线性结合权重。 单极参考家族总结在表\ref{}Table 2中，$\mathbf{f}_r\in{\mathbf{f}_RR,\mathbf{f}_LM,\mathbf{f}_AR,\mathbf{f}_REST}$。 注意到$\mathbf{f}_RR$和$\mathbf{f}_LM$中的非零元即1和0.5分别对应于唯一的物理参考电极的索引（Cz, Fz, Oz, or FCz 等）和 左右乳突或者耳垂位置的索引\citing{hu_how_2018}。 左右乳突或者耳垂的电极标号通常为$A1-A2$或者$M1-M2$或者在固定的电极分布中指的是$TP9$和$TP10$。
+
+在单极参考家族中，AR是估计无穷远参考下脑电电位$\mathbf{\phi}$最广泛应用的方法之一，其运算为
+\begin{equation}\label{4.5}
+\mathbf{T}_{AR}=\mathbf{I}_{N_c}-\mathbf{1f}_AR^T, \mathbf{1f}_AR=\mathbf{1}\div{N_c}
+\end{equation}
+对于完美的分层球面头形状，内部的神经源电流各向同性地传播，头表面的电位积分就理所应当为零\citing{bertrand_theoretical_1985,yao_is_2017}。 因此，所有电极上电位的平均可能趋于零将适合作为参考信号。
+
+REST利用等效源技术来转换一种参考记录到另外一种，其运算为
+\begin{equation}\label{4.6}
+\hat{\mathbf{\phi}}_{REST}=\mathbf{K}_{\infty}(\mathbf{K}_r^+\mathbf{v}_r)=\mathbf{R}_r\mathbf{v}_r
+\end{equation}
+这里$\mathbf{R}_r=\mathbf{K}_{\infty}\mathbf{K}_r^+$是依赖于内在嵌入在脑电数据$\mathbf{v}_r$中的参考变换矩阵$\mathbf{T}_r$的参考标准化矩阵，等效源近似地估计为$\hat{\mathbf{j}}=\mathbf{K}_r^+\mathbf{v}_r$\citing{yao_method_2001}。 因为$\mathbf{R}_r$是转换参考后的数据$\mathbf{v}_r$，REST被描述为一种对已经参考如AR变换后数据的再次转换。 这显然是不同于LM 和 AR， 二者同时转换无穷远参考下的理想电位$\mathbf{\phi}$。 为了更近地了解REST的对参考变换的实质，它就要求一种关于如何转换无穷远处脑电电位$\mathbf{\phi}$的显式表达式\citing{hu_how_2018}。 $\mathbf{T}_REST$的单极参考形式推导见下一节。
+
+\section{REST作为单点参考的证明}\label{RESTasUR}
+REST参考算子定义为
+\begin{equation}\label{4.7}
+\mathbf{T}_{REST}=\mathbf{K}_{\infty}\mathbf{K}_r^+\mathbf{T}_r
+\end{equation}
+这是通过对隐藏在脑电数据$\mathbf{v}_r$左乘以$\mathbf{R}_r$\citing{hu_how_2018}。 把传递矩阵变换到与\eqref{4.4}中具有相同的单极参考是
+\begin{equation}\label{4.8}
+\mathbf{K}_{r}=\mathbf{T}_r\mathbf{K}_{\infty}=\mathbf{K}_{\infty}+\mathbf{1}(\mathbf{-K}_{\infty}^T\mathbf{f}_r)^T
+\end{equation}
+因为分布神经源的个数远多于电极数目和异质的容积传导率，$\mathbf{K}_{\infty}$具有所有行相互独立，即行满秩，这就形成$\mathbf{K}_{\infty}\mathbf{K}_{\infty}^+=\mathbf{I}_N_c$以及$\rank(\mathbf{K}_r)=\rank(\mathbf{T}_r)$。 注意到$\mathbf{T}_r$是满秩亏损一\citing{hu_unified_2018}，因此$\rank(\mathbf{K}_r)=\rank(\mathbf{K}_{\infty})-1$，正是\cite{baksalary_revisitation_2003}中理论1.1中的情形 ($\downarrow$)。 
+通过按照\cite{baksalary_revisitation_2003}中的公式（1.3）定义$\mathbf{d}=-\mathbf{K}_{\infty}^+\mathbf{1}$我们得到
+\begin{equation}\label{4.9}
+\mathbf{K}_{r}^+\mathbf{K}_{r}=\mathbf{K}_{\infty}^+\mathbf{K}_{\infty}-\mathbf{dd}^T\div{\mathbf{d}^T\mathbf{d}}=\mathbf{K}_{\infty}^+\mathbf{K}_{\infty}-\mathbf{K}_{\infty}^+\mathbf{11}^T\mathbf{K}_{\infty}^+^T\div{\mathbf{1}^T\mathbf{K}_{\infty}^+^T\mathbf{K}_{\infty}^+\mathbf{1}}
+\end{equation}
+其推导可根据\cite{baksalary_revisitation_2003}中列表2.2中的情形 ($\downarrow$)。
+
+\eqref{4.7}中的REST运算子右边乘以$\mathbf{K}_{\infty}\mathbf{K}_{\infty}^+=\mathbf{I}_N_c$，则REST变换算子成为
+\begin{equation}\label{4.10}
+\mathbf{T}_{REST}=\mathbf{K}_{\infty}\mathbf{K}_{r}^+\mathbf{K}_{r}\mathbf{K}_{\infty}^+=\mathbf{I}_N_c-\mathbf{1}\frac{\mathbf{1}^T\mathbf{K}_{\infty}^+^T\mathbf{K}_{\infty}^+}{\mathbf{1}^T\mathbf{K}_{\infty}^+^T\mathbf{K}_{\infty}^+\mathbf{1}}
+\end{equation}
+显然，REST参考变换算子属于单极参考家族。写为形式$\mathbf{T}_REST=\mathbf{I}_N_c-\mathbf{1}\mathbf{f}_REST^T，REST的线性变换权重向量就为
+\begin{equation}\label{4.11}
+\mathbf{f}_{REST}=\mathbf{K}_{\infty}^+^T\mathbf{K}_{\infty}^+}\div{[\mathbf{1}^T\mathbf{K}_{\infty}^+^T\mathbf{K}_{\infty}^+\mathbf{1}]}
+\end{equation}
+
+因此，REST运算子遵守定义在\eqref{4.4}中单极参考家族的相同形式。 尽管参考标准化矩阵$\mathbf{R}_r$依赖于之前的脑电参考，REST参考变换算子$\mathbf{T}_REST$并不赖于脑电数据中特定的单极参考，注意到$\mathbf{f}_r$在\eqref{4.11}中消失掉，所以无论\eqref{4.7}中使用哪个$\mathbf{T}_r$结果都将是一致的。 REST是单极参考的证明澄清了它本身与其它参考之间的关系。
+
+\section{单点参考的属性}
+我们分析了单极参考家族，自然地发现了一些重要的属性，可以归纳为“无记忆性”，“满秩减一”和“正交投影中心化”。
+（1）无记忆性
+假设$\mathbf{T}_r1=\mathbf{I}_N_c-\mathbf{1f}_r1^T$是我们最终想要应用的参考，$\mathbf{T}_r2$是此前已经应用在数据中的参考，只要满足$\mathbf{f}_r1^T\mathbf{1}=1$，我们就可以得到
+\begin{equation}\label{4.12}
+\mathbf{T}_r1=\mathbf{T}_r1\mathbf{T}_r2
+\end{equation}
+这里$\mathbf{T}_r2$可以是任意一种单极参考算子。
+
+注意到$\mathbf{f}_r^T\mathbf{1}=1$对$\mathbf{f}_r\in{\mathbf{f}_RR,\mathbf{f}_LM,\mathbf{f}_AR,\mathbf{f}_REST}$均成立。 也就是说，这种无记忆性对单极参考家族包括在线记录参考例如Cz, Fz, Oz和FCz等以及离线重参考例如LM, AR和REST均存在。
+（2）满秩减一性
+对于单极参考$\mathbf{T}_r$具有$\mathbf{f}_r\in{\mathbf{f}_RR,\mathbf{f}_LM,\mathbf{f}_AR,\mathbf{f}_REST}$，都存在
+\begin{equation}\label{4.13}
+\rank(\mathbf{T}_r)=N_c-1
+\end{equation}
+这意味着$\mathbf{T}_r$的秩都是满秩减一。
+（3）正交投影中心化属性
+$\mathbf{T}_r^T$列空间上正交投影是中心化矩阵（等同于平均参考）
+\begin{equation}\label{4.14}
+\mathbf{T}_r^+\mathbf{T}_r=\mathbf{T}_AR
+\end{equation}
+
+读者可以在\cite{hu_unified_2018}的附录中查看“满秩减一”和“正交投影中心化”的详细证明。
+
+从\ref{RESTasUR}小节中可以发现，传递矩阵也具有“单位化”属性$\mathbf{K}_{\infty}\mathbf{K}_{\infty}^+=\mathbf{I}_N_c$，“满秩减一”属性$\rank(\mathbf{K}_r)=\rank(\mathbf{K}_{\infty}-1)$，以及“正交投影中心化”属性$\mathbf{K}_r^+\mathbf{K}_r=\mathbf{I}_N_c-\mathbf{K}_{\infty}^+\mathbf{11}^T\mathbf{K}_{\infty}\div{\mathbf{1}^T\mathbf{K}_{\infty}^+^T\mathbf{K}_{\infty}^+\mathbf{1}}$。 注意到如果传递矩阵$\mathbf{K}_{\infty}$是一个单位矩阵就很容易推出单极参考的“满秩减一”属性和“正交投影中心化”属性。 然而，实际真实的传递矩阵$\mathbf{K}_{\ifty}$远非单位矩阵。 计算传递矩阵的生物物理学假设正式REST与其他单极参考所在区别的主要原因。
+
+\section{AR和REST的最大似然估计}
+寻找最有参考的实际目的是估计无穷远参考下的脑电电位而不是真正地找到无穷远处的参考电极信号。 \eqref{4.3}中的单极参考模型可以改写为矩阵块形式
+\begin{equation}\label{4.15}
+\begin{pmatrix}\mathbf{v}_r-\\v_r\end{pmatrix}=\begin{pmatrix}\mathbf{T}_r-\\T_r^T\end{pmatrix}\mathbf{\phi}+\mathbf{\epislon}_r
+\end{equation}
+这里$\mathbf{T}_r-\in\mathbb{R}^({N_c}-1)\times{N_c}$是一个“胖”型矩阵，$\mathbf{t}_r\in\mathbb{R}^N_c\times1$，$\mathbf{v}_r-\in\mathbb{R}^(N_c-1)\times1$是向量，$v_r$是一个标量。
+
+因为$\mathbf{T}_r$是满秩减一，丢掉一行就会得到行满秩矩阵。 具体地，如果$\mathbf{T}_r$是记录参考，$t_r$对应着物理参考电极; 如果$\mathbf{T}_r$是左右连接乳突或者耳垂参考，$t_r$对应这左右乳突或者耳垂中的其中一个。 因此，单极参考模型化为
+\begin{equation}\label{4.16}
+\mathbf{v}_r-=\mathbf{T}_r-\mathbf{\phi}+\mathbf{\epislon}_r
+\end{equation}
+这里$\mathbf{\epislon}_r$的协方差矩阵是$\Sigma_{\mathbf{\epislon}_r\mathbf{\epislon}_r}=\sigma^2\mathbf{T}_r-\mathbf{T}_
+
+显然没有约束时，从$\mathbf{v}_r-\in\mathbb{R}^{(N_c-1)\times1}$估计$\mathbf{\phi}\in\mathbb{R}^{N_c\times1}$是欠定的问题。
+
+平均参考（AR）的约束是
+\begin{equation}\label{4.17}
+\mathbf{1}^T\mathbf{\phi}=0
+\end{equation}
+其物理意义是分层球体且是各向同性的传导体表面的电位的离散积分为零\citing{bertrand_theoretical_1985}。 对$\mathbf{\phi}$的估计是约束条件下的线性回归问题。 借助于\cite{magnus_matrix_2007}页303中的定理6，对\eqref{4.16}的最优线性无偏估计量是
+\begin{equation}\label{4.18}
+$\hat{\mathbf{\phi}}=(\mathbf{I}-\mathbf{P}^-1\mathbf{11}^T\div{\mathbf{1}^T\mathbf{P}^-1\mathbf{1}})\mathbf{T}_r-^T(\mathbf{T}_r-\mathbf{T}_r-^T)^-1\mathbf{v}_r-$
+\end{equation}
+这里$\mathbf{P}={\mathbf{T}_r-^T(\mathbf{T}_r-\mathbf{T}_r-^T)^-1\mathbf{T}_r-}+\mathbf{11}^T$，因为$\mathbf{T}_r-^T(\mathbf{T}_r-\mathbf{T}_r-^T)^-1=\mathbf{T}_r-^+$以及$\mathbf{T}_r-^+\mathbf{T}_r-=\mathbf{T}_AR$。 $\mathbf{P}$就简化写作$\mathbf{P}=\mathbf{I}+\mathbf{11}^T\div{[\mathbf{11}^T\div{\mathbf{1}^T\mathbf{1}-1}]}$。
+
+$\mathbf{P}$的矩阵广义可以通过\cite{baksalary_revisitation_2003}的公式（2.2）求解为
+\begin{equation}\label{4.19}
+\mathbf{P}^-1=\mathbf{I}-(\mathbf{1}^T\mathbf{1}-1)\mathbf{11}^T\div{\mathbf{1}^T\mathbf{11}^T\mathbf{1}}
+\end{equation}
+
+将等式\eqref{4.19}代入等式\eqref{4.18}并简化得到
+\begin{equation}\label{4.20}
+\hat{\mathbf{\phi}}=\mathbf{T}_AR\mathbf{T}_r-^+\mathbf{v}_r-=\mathbf{T}_AR\mathbf{T}_r-^+(\mathbf{T}_r-\mathbf{\phi}+\mathbf{\epislon_r-})=\mathbf{T}_AR(\mathbf{\phi}+\mathbf{\epislon})
+\end{equation}
+如果传感器电极噪声趋于零或者我们忽略电极噪声，\eqref{4.20}就是就是传统的平均参考（AR）。 这说明可以通过约束所有电极上电位之和为零推导出AR，如果该约束是正确的并且传感器电极噪声可以忽略，那么无穷远参考下脑电电位的最优线性无边估计量也将是AR。
+
+对于REST，将传递矩阵$\mathbf{K}_{\infty}$进行奇异值分解为$\mathbf{K}_{\infty}=\mathbf{USW}^T$，\eqref{4.16}就表示为
+\begin{equation}\label{4.21}
+\mathbf{v}_r-=\mathbf{T}_r-\mathbf{USW}^T\mathbf{j}+\mathbf{\epislon}_r-
+\end{equation}
+定义$\mathbf{L}=\mathbf{T}_r-\mathbf{US}$以及$\mathbf{\beta}=\mathbf{W}^T\mathbf{j}$，\eqref{4.21}就化为
+\begin{equation}\label{4.22}
+\mathbf{v}_r-=\mathbf{L\beta}+\mathbf{T}_r-\mathbf{\epislon}
+\end{equation}
+
+REST的约束是
+\begin{equation}\label{4.23}
+min{lVert\betarVert}_M^2
+\end{equation}
+这里$M$表示Mahalanobis距离。 这意味着REST不依赖于特定的溯源方法但是依赖于参数$\mathbf{\beta}=\mathbf{W}^T\mathbf{j}$。 REST的约束所给出的是最小化正演模型（传递举着）和实际神经源活动信息组合起来的结构项。 然而，因为$\mathbf{W}是一个正交单位矩阵，$\mathbf{\beta}$的最小模当神经源活动$\mathbf{j}$具有先验的独立同分布的先验协方差时等于$\mathbf{j}$的最小欧式模。
+
+在等式\eqref{4.22}求解约束\eqref{4.23}，我们得到
+\begin{equation}\label{4.24}
+\hat{mathbf{\beta}}=\Sigma_{\mathbf{\beta\beta}}\mathbf{L}^T(\mathbf{L}\Sigma_\mathbf{\beta\beta}\mathbf{L}^T+\mathbf{T}_r-\Sigma_{\mathbf{\epislon\epislon}\mathbf{T}_r-^T})^-1\mathbf{v}_r-
+\end{equation}
+
+将等效源协方差设为$\Sigma_\mathbf{jj}=\alpha^2\mathbf{I}_N_s$以及给定$\mathbf{K}_r-=\mathbf{T}_r-\mathbf{USW}^T$，$\mathbf{K}_{\infty}\mathbf{K}_{\infty}^T=\mathbf{US^2U}^T$，将\eqref{4.24}乘以$\mathbf{US}$得到
+\begin{equation*}
+\hat{\mathbf{\phi}}=\mathbf{K}_{\infty}\mathbf{K}_r-^T(\mathbf{K}_r-\mathbf{K}_r-^T+\frac{\sigma^2}{\alpha^2}\mathbf{T}_r-\mathbf{T}_r-^T)^-1\mathbf{v}_r-
+\end{equation*}
+当$\sigma$趋近于零或者传感器电极噪声被人为忽略，$\hat{\mathbf{\phi}}=\mathbf{K}_{\infty}\mathbf{K}_r-^T\mathbf{v}_r-$就是REST。 REST假设脑电电位是由容积传导模型经过传递矩阵生成，可以添加一种最小模约束对无穷远电位的求解。
+
+注意到$\mathbf{K}_{\infty}$比$\mathbf{K}_r-$多一个通道，意味着REST的插值功能。 插值功能可以在当参考通道丢失时恢复全通道记录或者推广到恢复被拒绝丢弃的坏导。
+
+\section{AR和REST的贝叶斯估计}
+所有的参考都是无穷远参考下理想脑电电位的线性结合。这通过传递矩阵转换为神经源活动的线性转换。因此，对$\hat{\mathbf{\phi}}$的估计就转换为对线性欠定逆问题的求解。 就有必要进行溯源的研究。 无穷远参考下脑电电位估计量是贝叶斯理论中的最大后验估计量：
+\begin{equation}\label{4.25}
+\pro{\mathbf{\phi}|\mathbf{x},\mathbf{T}_o,\mathbf{\epislon}}\propto\pro{\mathbf{x}|\mathbf{\phi},\mathbf{T}_o,\mathbf{\epislon}}\pro{\mathbf{\phi}}\pro{\mathbf{\epislon}}
+\end{equation}
+
+这里$\pro{\mathbf{\phi}|\mathbf{x},\mathbf{T}_o,\mathbf{\epislon}}$是给定似然$\pro{\mathbf{x}|\mathbf{\phi},\mathbf{T}_o,\mathbf{\epislon}}$和先验$\pro{\mathbf{\phi}}\pro{\mathbf{\epislon}}$的后验。 使用调参$\lambda$，\eqref{4.25}按照\cite{noauthor_mardia_nodate}可以转换为
+\begin{equation}\label{4.26}
+\ell = \Vert\mathbf{x}-\mathbf{T}_o\mathbf{\phi}\rVert_M^2+\lambda\lVert\mathbf{\phi}\rVert_M^2
+\end{equation}
+求解\eqref{4.26}得到无穷远参考下的脑电电位的最大后验估计量
+\begin{equation}\label{4.27}
+\hat{\mathbf{\phi}}=\Sigma_\mathbf{\phi\phi}\mathbf{T}_o^T(\mathbf{T}_o\Sigma_\mathbf{\phi\phi}\mathbf{T}_o^T+\sigma^2\mathbf{T}_o\mathbf{T}_o^T)^+\mathbf{x}}
+\end{equation}
+这就是使用贝叶斯理论脑电参考电极问题的通用解。 特定脑电参考转换矩阵$\mathbf{T}_o$为$\mathbf{T}_r$，那么$\hat{\mathbf{\phi}}$估计量之间的差异就仅仅在于无穷远参考下脑电电位的先验协方差$\Sigma_{\mathbf{\phi\phi}}。
+
+平均参考AR是等式\eqref{4.27}在具有独立同分布先验协方差$\Sigma_{\mathbf{\phi\phi}}=\alpha^2\mathbf{I}_N_c$时的特例。 这就推出了最小模最小二乘解
+\begin{equation}\label{4.28}
+\hat{\mathbf{\phi}_r}=\alpha^2\mathbf{T}_r^T(\alpha^2\mathbf{T}_r\mathbf{T}_r^T+\sigma^2\mathbf{T}_r\mathbf{T}_r^T)^+\mathbf{v}_r
+\end{equation}
+当$\sigma^2$趋近于零，代入\eqref{4.3}到\eqref{4.28}，\eqref{4.28}就可以简化为
+\begin{equation}\label{4.29}
+\hat{\mathbf{\phi}_r}=\mathbf{T}_r^+\mathbf{T}_r\mathbf{\phi}+\mathbf{T}_r^+\mathbf{\epislon}_r
+\end{equation}
+
+因为“正交投影中心化”属性对单极参考家族都成立，因此
+\begin{equation}\label{4.30}
+\hat{\mathbf{\phi}_AR}=\hat{\mathbf{\phi}_r}=\mathbf{T}_AR\mathbf{\phi}+\mathbf{\epislon}_AR
+\end{equation}
+所以，当$\mathbf{\phi}$的先验协方差是独立同分布的，任何单极参考下\eqref{4.3}的最小模解都将是平均参考（AR）。 这也肯定了AR只能用于之前被参考于其它单极参考情况的脑电数据这一推断\citing{hu_restate_2018}。
+
+相比之下，如果无穷远参考下的脑电电位$\mathbf{\phi}$是由具有独立同分布的先验协方差的神经源活动生成的，REST就能够推导出来。对于任何参考下的脑电数据，\eqref{4.2}的这一变形都成立：
+\begin{equation}\label{4.31}
+\mathbf{x}=\mathbf{T}_o\mathbf{\phi}+\mathbf{\epislon}_o
+\end{equation}
+
+
+这里$\mathbf{K}_o=\mathbf{T}_o\mathbf{K}_{\infty}$是线性变换后的正演模型。 从\eqref{4.2}，等效源的协方差为$\Sigma_{\mathbf{jj}}$，对等式\eqref{4.31}的解表示为
+\begin{equation}\label{4.32}
+\hat{\mathbf{\phi}_rREST}=\mathbf{K}_{\infty}\Sigma_{\mathbf{jj}}\mathbf{K}_o^T(\mathbf{K}_o\Sigma_{\mathbf{jj}}\mathbf{K}_o^T+\sigma^2\mathbf{T}_r\mathbf{T}_r^T)^+\mathbf{x}
+\end{equation}
+这就是REST的正则化版本（rREST）\citing{hu_unified_2018}。 如果假设等效源具有独立同分布的协方差先验$\Sigma_\mathbf{jj}=\alpha^2\mathbf{I}_N_j$，rREST参考算子就简化为
+\begin{equation}\label{4.33}
+\mathbf{T}_rREST=\alpha^2\mathbf{K}_{\infty}\mathbf{K}_o^T(\alpha^2\mathbf{K}_o\mathbf{K}_o^T+\sigma^2\mathbf{T}_o\mathbf{T}_o^T)^+
+\end{equation}
+
+当$\mathbf{x}$是通过单极参考$r$变换得到，$\sigma$趋近于零（无噪声数据），\eqref{4.33}就简化为传统的REST\citing{yao_method_2001}。
+
+通过贝叶斯理论，REST假设了脑电电位是由独立的神经源生成的\citing{hu_unified_2018}。 神经源其它类型的协方差先验对REST型的估计量的影响还在研究当中。 
+\section{讨论}
+在本章中，脑电参考电极问题的广义形式被理解为对无穷远参考下脑电电位$\mathbf{\phi}$的线性转换，这种转换肯呢个是单极参考或者非单极参考，例如双极记录和头表拉普拉斯变换；单极参考的共同结构通过统一的数学表达式给出；这里我们首次发现解决参考问题中的插值功能以及证明了REST也是一种单极参考。这允许我们賴研究单极参考广义的家族及其规律。另外，单极参考家族的一些宝贵的属性被归纳起来以建立之间的内在联系。 
+
+最惊人的属性是无记忆性，表明单极参考独立起作用，没有已经应用的单极参考作用，也意味着研究人员总是可以安全地用不同的参考技术重新参考脑电或者时间诱发电位记录但无需担心多次重参考会累积误差， 任何单极参考的两个可以相互转换以及所有的单极参考相互独立起作用。 在转换为另一个单极参考之前，我们最好检查是否目前的数据是基于单极参考，从非单极参考到单极参考的转换将会破坏数据集，尽管在单极参考家族内部之间转换是没有问题的。 这个属性表明单极参考可以消除其他单极参考的影响，多次应用单极参考因此是安全的。 在实际脑电数据预处理中，无记忆性值得被脑电研究工作者注意到。
+
+秩亏损一这一具有显著意义的属性意味着单极参考总将无穷远参考下的理想脑电电位的满秩减去一。 丢失掉的一个秩是因为从所有电极上减去的参考信号是所有电极在无穷远参考下活动的线性组合。 该属性告诉我们如果不引入额外的先验信息，是不可能获得对理想脑电电位$\mathbf{\phi}$的无偏估计量。 然而，不同的单极参考的确具有不同的偏差，这依赖于多少先验信息在估计无穷远下理想电位$\matnbf{\phi}$时被引入用到。
+
+正交投影中心化这一对于重要属性（更对于AR来说）是在秩减一的情况中从Moore–Penrose伪逆解理论证明得到。 该属性在从最大似然估计和贝叶斯理论推导出AR的过程中得到充分使用。 相似地，REST中用到的传递矩阵具有正交投影加权中心化的属性。 和单位化属性以及秩减一属性一起，REST也被证明为一种单极参考。 正式借助于这种正交投影（加权）中心化属性才能够证明AR和REST不依赖于以前应用于脑电数据上的任何具体的单极参考方式，最终AR和REST都可以推导出。
+
+在单极参考家族中，AR和REST是主要的两个竞争对手。本章中发现最大似然估计和贝叶斯理论方法都可以推导出AR和REST的估计量。一种方法是利用广义线性回归模型\citing{magnus_matrix_2007}使用最大似然估计但是用线性和二次约束项分别推导出AR和REST。 AR在给定所有电极上脑电电位之和为零这个线性约束时就可以证明为是最优线性无偏估计量。对比而言，REST是最小化等效源线性结合的二次约束。
+另外一种更加灵活的推导思路是利用贝叶斯理论。 AR是通过假设多通道脑电记录具有先验的独立同分布协方差推导出来的；REST是通过容积传导模型和神经源活动的先验独立同分布协方差推导出来的。 从最大似然估计的角度，如果头皮上脑电电位的离散积分为零这个约束是正确的，那么AR就是理论上正确的。 无论我们从哪一个单极参考开始，这都是正确的并且最佳的无偏线性估计量将会是AR。电位的积分部分程度上依赖于电极分布和密度\citing{bertrand_theoretical_1985,nunez_rest_2010}。 然而，最近的研究工作表明AR的效果与电极密度并无紧密联系，这和基于零积分假设的常规理解不同，而是覆盖范围是比电极密度更加重要的因素\citing{hu_how_2018}。 从贝叶斯理论的角度，AR实质上是在解决一个广义线性逆问题賴估计无穷远参考下的电位。 用多通道脑电电位独立同分布的先验假设，无论脑电数据是基于哪种单极参考，最小模的估计量将会是AR。 无穷远参考下多通道脑电电位的独立同分布的协方差先验的假设是确定错的，因为容积传导效应这个事实被忽略掉。另外，在转换为AR之前，我们需要注意手头的脑电数据是基于一种单极参考，这就限制了AR的广泛使用\citing{hu_restate_2018}。
+
+从最大似然估计的角度，二次约束表明REST不完全依赖于源空间的配置但是依赖于通过代表无限多种源配置的等效源在头表上活动的效果。当我们假设脑电数据是由大脑神经源生成时，理论上rREST（REST）是对无穷远参考下脑电电位的最优估计。REST允许正演计算中的电极数目比估计等效源时用到的电极数目多。 正演模型中更多的电极数，哪些丢失的或者作为坏道拒绝的可以通过REST的插值功能恢复。
+
+值得从贝叶斯的理论强调在REST中神经源的统计学分布仅仅仅仅在无穷远电位估计中作为先验的特殊一种；REST是一种最大后验估计量，其中等效源方法可以防止对源的错误估计。REST的目标不是找到实际的神经源，这也是不必需的。作为REST的扩展，rREST具有更加广泛使用的能力。公式 \eqref{4.31}-\eqref{4.33}是相当广义的，不管哪种$\mathbf{T}_o$应用到$\mathbf{x}$， 意味着rREST也能够适应非单极参考的记录，例如双极记录和头拉普拉斯。 如在\cite{hu_unified_2018}中，REST的两个可能的限制是无噪声脑电数据的假设和球面头模型的使用。 仿真研究和大量真实脑电记录数据表明除非脑电数据具有极高的$SNR$，使用球面传递矩阵的REST也可以无需要构造真实的头模型。另外，一种被试群体平均的传递矩阵和基于广义交叉验证的去噪应该在rREST实际中应用\citing{hu_unified_2018}。 读者可以访问$https://github.com/ShiangHu/LeadField-
+Pipeline$ 获得实际头模型易于执行的流程代码和$https://github.com/ShiangHu/Unified-EEG-reference-rREST$了解如何使用rREST。
 \section{本章小结}
+本章中研究发现所有常见的脑电参考，包括REST，都可以用统一的数学符号用公式表示为单极参考家族。单极参考的一些属性例如，无记忆性、秩亏损一，正交投影中心化可能在帮助实际运用参考中具有重要价值。最大似然估计和贝叶斯理论都可以推导出AR和REST。这些结果加上REST的插值功能，为将来的脑电以及事件诱发电位中参考的使用提供了崭新的理解和统计学证据。
