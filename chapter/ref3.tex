@@ -142,7 +142,7 @@ $\mathbf{T}_r^T$列空间上正交投影是中心化矩阵（等同于平均参�
 
 $\mathbf{P}$的矩阵广义可以通过\cite{baksalary_revisitation_2003}的公式（2.2）求解为
 \begin{equation}\label{eq4.19}
-\mathbf{P}^-1=\mathbf{I}-(\mathbf{1}^T\mathbf{1}-1)\mathbf{11}^T/{\mathbf{1}^T\mathbf{11}^T\mathbf{1}}
+\mathbf{P}^{-1}=\mathbf{I}-(\mathbf{1}^T\mathbf{1}-1)\mathbf{11}^T/{\mathbf{1}^T\mathbf{11}^T\mathbf{1}}
 \end{equation}
 
 将等式\eqref{eq4.19}代入等式\eqref{eq4.18}并简化得到
@@ -197,16 +197,16 @@ P(\mathbf{\phi}\mid\mathbf{x},\mathbf{T}_o,\mathbf{\epsilon})\propto{P(\mathbf{x
 
 平均参考AR是等式\eqref{eq4.27}在具有独立同分布先验协方差$\Sigma_{\mathbf{\phi\phi}}=\alpha^2\mathbf{I}_{N_c}$时的特例。 这就推出了最小模最小二乘解
 \begin{equation}\label{eq4.28}
-\hat{\mathbf{\phi}_r}=\alpha^2\mathbf{T}_r^T(\alpha^2\mathbf{T}_r\mathbf{T}_r^T+\sigma^2\mathbf{T}_r\mathbf{T}_r^T)^+\mathbf{v}_r
+\hat{\mathbf{\phi}}_r=\alpha^2\mathbf{T}_r^T(\alpha^2\mathbf{T}_r\mathbf{T}_r^T+\sigma^2\mathbf{T}_r\mathbf{T}_r^T)^+\mathbf{v}_r
 \end{equation}
 当$\sigma^2$趋近于零，代入\eqref{eq4.3}到\eqref{eq4.28}，\eqref{eq4.28}就可以简化为
 \begin{equation}\label{eq4.29}
-\hat{\mathbf{\phi}_r}=\mathbf{T}_r^+\mathbf{T}_r\mathbf{\phi}+\mathbf{T}_r^+\mathbf{\epsilon}_r
+\hat{\mathbf{\phi}}_r=\mathbf{T}_r^+\mathbf{T}_r\mathbf{\phi}+\mathbf{T}_r^+\mathbf{\epsilon}_r
 \end{equation}
 
 因为“正交投影中心化”属性对单极参考家族都成立，因此
 \begin{equation}\label{eq4.30}
-\hat{\mathbf{\phi}_{AR}}=\hat{\mathbf{\phi}_r}=\mathbf{T}_{AR}\mathbf{\phi}+\mathbf{\epsilon}_{AR}
+\hat{\mathbf{\phi}}_{AR}=\hat{\mathbf{\phi}}_r=\mathbf{T}_{AR}\mathbf{\phi}+\mathbf{\epsilon}_{AR}
 \end{equation}
 所以，当$\mathbf{\phi}$的先验协方差是独立同分布的，任何单极参考下\eqref{eq4.3}的最小模解都将是平均参考（AR）。 这也肯定了AR只能用于之前被参考于其它单极参考情况的脑电数据这一推断\citing{hu_restate_2018}。
 

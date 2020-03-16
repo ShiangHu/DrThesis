@@ -1,12 +1,12 @@
 \chapter{基于贝叶斯的无穷远参考下脑电电势的统一估计量：正则化的参考电极标准化技术}
 \section{引言}
-脑电参考选择是一个持续很久悬而未决的问题，导致了不一致的用法和无休止的争论。当前，平均参考（AR）和正则化点击标准化技术是两个主要，显然不能调和的竞争者。在本章中，我们提出了理论架构旨在解决参考问题，通过公式化(a) 无穷远参考下的脑电电位估计，和(b) 参考的抉择作为一个统一的贝叶斯线性逆问题，该问题可以通过最大后验估计解决。我们发现AR和REST是该统一的统计学架构非常特殊的两种情形：AR 源自于不具有生物物理学知识的先验假设；然而，REST采用了基于脑电正演模型的先验。为了同时去噪和参考估计，我们提出了AR和REST的正则化版本，分别称为rAR和rREST。二者均依赖于正则化参数，即实际的噪声信号比。传统和新的参考估计量在该统计学架构下通过仿真和真实脑电数据分析得以评价。最后，我们借助于古巴人脑计划项目中的89个被试的MRI数据和脑电数据。 仿真的具有噪声脑电作为基标准，研究表明在估计无穷远参考的脑电电位时rREST最低。同时，我们也发现真实容积传导模型改进了REST and rREST的效果。重要地是，在实际应用中，被试群体平均的传递矩阵给出了和个体传递矩阵可比的结果。最后，通过GCV的正则化参数选择接近于具有基标准的黄金参数选择。当我们分析89个被试的静息脑电，rREST 一致性地具有最低的GCV值。该章节研究通过统一的逆问题解架构提供了脑电参考问题的崭新视角。 这将可能带了更多的符合逻辑的理论公式和对于参考效果的数值评价。
+脑电参考选择是一个持续很久悬而未决的问题，导致了不一致的用法和无休止的争论。当前，平均参考（AR）和正则化点击标准化技术是两个主要，显然不能调和的竞争者。在本章中，我们提出了理论架构旨在解决参考问题，通过公式化(a) 无穷远参考下的脑电电位估计，和(b) 参考的抉择作为一个统一的贝叶斯线性逆问题，该问题可以通过最大后验估计解决。我们发现AR和REST是该统一的统计学架构非常特殊的两种情形：AR 源自于不具有生物物理学知识的先验假设；然而，REST采用了基于脑电正演模型的先验。为了同时去噪和参考估计，我们提出了AR和REST的正则化版本，分别称为rAR和rREST。二者均依赖于正则化参数，即实际的噪声信号比。传统和新的参考估计量在该统计学架构下通过仿真和真实脑电数据分析得以评价。最后，我们借助于古巴人脑计划项目中的89个被试的MRI数据和脑电数据。 仿真的具有噪声脑电作为基标准，研究表明在估计无穷远参考的脑电电位时rREST最低。同时，我们也发现真实容积传导模型改进了REST和rREST的效果。重要地是，在实际应用中，被试群体平均的传递矩阵给出了和个体传递矩阵可比的结果。最后，通过GCV的正则化参数选择接近于具有基标准的黄金参数选择。当我们分析89个被试的静息脑电，rREST 一致性地具有最低的GCV值。该章节研究通过统一的逆问题解架构提供了脑电参考问题的崭新视角。 这将可能带了更多的符合逻辑的理论公式和对于参考效果的数值评价。
 \section{研究背景}
 90年来，人类脑电图对于研究认知和临床神经科学来说已经成为不可或缺的工具。超高的时间分辨率、成本较低和无创性使其成为研究大脑的有力转化工具之一。然而，两个主要缺陷：容积传导效应造成的空间混叠模糊和总是基于一种参考点的电势测量的固有不确定性\citing{teplan_fundamentals_2002}，减少了其探究定位脑活动的能力。空间模糊正在被先进的溯源成像技术所解决，不是本章节的重点。我们重点研究令人烦恼但不完全解决的“脑电参考电极问题上”。
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=15cm]{pic/Frontier/figure1.png}
-	\caption{脑电参考问题图解}
+	\caption{脑电参考问题图解。脑电记录测量的是活跃电极(黄色表示，仅3个作为示例)和红色表示的参考电极之间的电位差。 (a) 无穷远处的参考点；(b) 身体表面的电极例如，脖子；(c) 头表参考电极Cz；(d)所有活跃电极电位的平均值作为平均参考。 (b-d)中的参考办法用以近似(a)中的无穷远参考。 不同的参考方法得到不同的脑电电位，这就是“脑电参考问题”。 注意到相同神经源活动$\mathbf{j}$, 不同的脑电波形$\mathbf{\phi}_\infty,\mathbf{v}_{BR},\mathbf{v}_{Cz},\mathbf{v}_{AR}$可以理解为不同传递矩阵$\mathbf{K}_\infty,\mathbf{K}_{BR},\mathbf{K}_{Cz},\mathbf{K}_{AR}$的结果。}
 	\label{3.1}
 \end{figure}
 为了精确定义这一问题，我们注意到这是由于脑电记录的固有本质是两个位点上的电势差。如图\ref{3.1}所示。理想情况下，人们希望用活跃电极只记录到部分脑组织产生的电活动信号，此时相对于具有零活动的中立参考电极。有人可能认为，参考电极应该放在无穷远，此时记录到的电位记为 $\mathbf{\phi}_{\infty}$。然而，这在实际中并不可行，因为这种无穷远放置好似一种天线，引入不必要的环境噪声。一些研究人员因而实验体表的参考电极以至于脑电差分放大器能够通过高的共模抑制比消除环境噪声。然而，因为体表上并无中立或者不活动的位点，这些提议也是不够的。一种物理上中立的参考似乎不望不可及。
@@ -19,7 +19,7 @@
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=15cm]{pic/Frontier/figure2.png}
-	\caption{REST参考变换图解}
+	\caption{REST参考变换图解。 (a)参考到Cz测得的脑电电位$\mathbf{v}_{Cz}$, $\mathbf{j}$和$\mathbf{K}_{Cz}$分别是实际的神经源活动和参考到Cz的实际传递矩阵；(b)REST首先利用估计的头模型计算传递矩阵$\hat{\mathbf{K}}_\infty$，再转换传递矩阵到$\hat{\mathbf{K}}_{Cz}$, 进而估计等效源$\hat{\mathbf{j}}$, 最后等效源活动通过正演计算得到无穷远参考下脑电电位的近似$\hat{\mathbf{\phi}}_\infty$。}
 	\label{3.2}
 \end{figure}
 一种更加基于生物物理学的 $\mathbf{\phi}_{\infty}$ 虚拟估计量可以通过如图\ref{3.1}2所示的参考电极标准技术（REST）得到\citing{yao_method_2001}。REST采用一种头模型和等效源模型賴定位源活动，然后投射源活动到电极上，此时虚拟参考到无穷远。REST的早期工作是基于一种简单的球面头模型。 不久，脑电功率谱能量地形图\citing{yao_d_comparative_2005}和ERP峰值和潜伏期\citing{li_new_2007}的确高度依赖于参考的选择。 在进一步的研究中，\citing{tian_why_2013}研究发现 使用REST的头表SPM（统计参数成像）对听觉视觉刺激诱发电位研究比使用AR提供了更接近于通过LORETA的源定位结果。关于REST的令人鼓舞的结果通过一些仿真研究得到增强。采用球模型仿真，
@@ -32,11 +32,11 @@
 \begin{equation}\label{eq3.1}
 \mathbf{v}=\mathbf{\phi}-\mathbf{1}*\rho+\mathbf{\epsilon}-\mathbf{1}*\zeta
 \end{equation}
-这里，$\mathbf{\phi}$是采用中立参考的$N_{e}$通道干净脑电信号，也即是上面提到的$\mathbf{\phi}_{\infty}$，其分布是$N(\mathbf{0},\Sigma_{\mathbf{\phi}\mathbf{\phi}})$; $\mathbf{\epsilon}$ 是传感器电极噪声，其分布为$N(\mathbf{0},\sigma^{2}\mathbf{I}_{N_{e}})$。$\rho$和$\zeta$分别是脑电信号$\mathbf{\phi}$和$\mathbf{\epsilon}$的参考常量。$\rho$假设来自于大脑源活动，但$\zeta$可能来自大脑源、非大脑源或者二者的混合活动。由于这些常数的不确定性，$\mathbf{v}$的参考是一个未知变量。 注意到$\mathbf{\phi}$和$\mathbf{\epsilon}$的其他统计分布也适用于该相同的架构。参考起作用的过程起到了对脑电数据线性变化的作用，正式意义上，是对脑电数据矩阵左乘参考变换矩阵。因此，假设参考变换矩阵为$\mathbf{H=I-1f^T}$\citing{hu_how_2018},那么参考变化可以写作
+这里，$\mathbf{\phi}$是采用中立参考的$N_{e}$通道干净脑电信号，也即是上面提到的$\mathbf{\phi}_{\infty}$，其分布是$N(\mathbf{0},\Sigma_{\mathbf{\phi}\mathbf{\phi}})$; $\mathbf{\epsilon}$ 是传感器电极噪声，其分布为$N(\mathbf{0},\sigma^{2}\mathbf{I}_{N_{e}})$。$\rho$和$\zeta$分别是脑电信号$\mathbf{\phi}$和$\mathbf{\epsilon}$的参考常量。$\rho$假设来自于大脑源活动，但$\zeta$可能来自大脑源、非大脑源或者二者的混合活动。由于这些常数的不确定性，$\mathbf{v}$的参考是一个未知变量。 注意到$\mathbf{\phi}$和$\mathbf{\epsilon}$的其他统计分布也适用于该相同的架构。参考起作用的过程起到了对脑电数据线性变化的作用，正式意义上，是对脑电数据矩阵左乘参考变换矩阵。因此，假设参考变换矩阵为$\mathbf{H=I-1f}^T$\citing{hu_how_2018},那么参考变化可以写作
 \begin{equation*}
-\mathbf{v}_{r}=\mathbf{Hv}=\mathbf{H(\phi+\epsilon)}-(\mathbf{I-1f^T})\times\mathbf{1}\times(\rho+\zeta)
+\mathbf{v}_{r}=\mathbf{Hv}=\mathbf{H(\phi+\epsilon)}-(\mathbf{I-1f}^T)\times\mathbf{1}\times(\rho+\zeta)
 \end{equation*}
-注意到，等式$\mathbf{f^T1}=1$对所有的单点参考均成立，这些单点参考包括单点记录参考（例如Cz，Fz，Oz等），连接耳和平均参考。
+注意到，等式$\mathbf{f}^T\mathbf{1}=1$对所有的单点参考均成立，这些单点参考包括单点记录参考（例如Cz，Fz，Oz等），连接耳和平均参考。
 
 因此，广义的脑电参考模型为
 \begin{equation}\label{eq3.2}
@@ -80,11 +80,11 @@ l=\mathbf{(v_{r}-H\phi)^{T}\Sigma_{ee}^{+}(v_{r}-H\phi)+\phi^{T}\Sigma_{\phi\phi
 
 我们定义$\mathbf{K}_{r}=\mathbf{HK}_{\infty}$，并代\eqref{eq3.8}入\eqref{eq3.4}得到
 \begin{equation}\label{eq3.9}
-\hat{\mathbf{\phi}}=\mathbf{K}_{\infty}\Sigma_{\mathbf{jj}}\mathbf{K}_{r}^{T}\mathbf{(\mathbf{K}_{r}\Sigma_{\mathbf{jj}}\mathbf{K}_{r}^{T}+\Sigma_{ee})^{+}v}_{r}
+\hat{\mathbf{\phi}}=\mathbf{K}_\infty\Sigma_{\mathbf{jj}}\mathbf{K}_r^T(\mathbf{K}_r\Sigma_{\mathbf{jj}}\mathbf{K}_r^T+\Sigma_{\mathbf{ee}})^+v_r
 \end{equation}
-该表达式就是重建无穷远参考的脑电电位的估计量，记为正则化的参考点击标准化技术（rREST）。这个参考变换过程可以理解为两个步骤：
-步骤一：$\hat{\mathbf{j}}=\Sigma_{\mathbf{jj}}\mathbf{K}_{r}^{T}\mathbf{(\mathbf{K}_{r}\Sigma_{\mathbf{jj}}\mathbf{K}_{r}^{T}+\Sigma_{ee})^{+}v}_{r}$
-步骤二：$\hat{\mathbf{\phi}}=\mathbf{K}_{\infty}\mathbf{j}$
+该表达式就是重建无穷远参考的脑电电位的估计量，记为正则化的参考点击标准化技术（rREST）。这个参考变换过程可以理解为两个步骤：\\
+步骤一：$\hat{\mathbf{j}}=\Sigma_{\mathbf{jj}}\mathbf{K}_{r}^T(\mathbf{K}_{r}\Sigma_{\mathbf{jj}}\mathbf{K}_r^T+\Sigma_{\mathbf{ee}})^+v_r$\\
+步骤二：$\hat{\mathbf{\phi}}=\mathbf{K}_{\infty}\mathbf{j}$\\
 其中，步骤一采用传递矩阵$\mathbf{K}_{r}$解决了逆问题，该传递矩阵含有和脑电信号$\mathbf{v}_{r}$相同的参考，步骤二进行正演计算来重建理论的中立参考的脑点电位。 步骤一中的$\hat{\mathbf{j}}$ 是同时解决线性逆问题和参考问题的标准形式。
 
 我们定义电极噪声对大脑神经源活动信号比为$nsr_{2}=\sigma^{2}/\beta^{2}$，代入$\sigma_{\mathbf{jj}}=\beta^{2}\mathbf{I}_{N_{s}}$和$\sigma_{\mathbf{ee}}=\sigma^{2}\mathbf{HH^{T}}$到\eqref{eq3.9}，我们得到：
@@ -101,11 +101,11 @@ l=\mathbf{(v_{r}-H\phi)^{T}\Sigma_{ee}^{+}(v_{r}-H\phi)+\phi^{T}\Sigma_{\phi\phi
 \hat{\mathbf{\phi}}(\lambda)=\mathbf{\phi}\underbrace{argmin}{\lVert\mathbf{V}_{r}-\mathbf{H\phi}\rVert_{M}^{2}+\lambda\lVert\mathbf{L\phi}\rVert_2^2}
 \end{equation}
 这里$\lambda>=0$是正则化参数，$\mathbf{L}$是正则化矩阵。方便起见，我们也称$\lambda$和$\mathbf{L}$ 的正则化作用分别为参数正则化和结构正则化。
-脊回归是Tikhonov正则化的统计学名字\citing{hoerl_ridge_1970}。脊回归的广义与标准形式的差别在于是否正则化矩阵$\mathbf{L}$是单位矩阵，是否失匹配项是欧式模\citing{chung_optimal_2014}。 由此，我们重定义$\mathbf{\phi^\prime=L\phi}$ 以至于正则化矩阵成为单位阵，同时$\mathbf{e^\prime=D^{T}U^{T}e}$（分解$\mathbf{HH^{T}=USU^{T}}$和$\mathbf{S}^{+}=\mathbf{DD^{T}}$）以转换失匹配项从Mahalanobis模为欧式模。最终，标准的脊回归形式化为
+脊回归是Tikhonov正则化的统计学名字\citing{hoerl_ridge_1970}。脊回归的广义与标准形式的差别在于是否正则化矩阵$\mathbf{L}$是单位矩阵，是否失匹配项是欧式模\citing{chung_optimal_2014}。 由此，我们重定义$\mathbf{\phi^\prime=L\phi}$ 以至于正则化矩阵成为单位阵，同时$\mathbf{e^\prime=D^{T}U^{T}e}$（分解$\mathbf{HH^{T}=USU^{T}}$和$\mathbf{S}^+=\mathbf{DD}^T$以转换失匹配项从Mahalanobis模为欧式模。最终，标准的脊回归形式化为
 \begin{equation}\label{eq3.12}
-\hat{\mathbf{\phi}}^\prime(\lambda)=\mathbf{\phi}^\prime\underbrace{argmin}{\Vert{\mathbf{V}_{r}^\prime-\mathbf{H^\prime\phi^\prime}}2^2+\lambda\Vert{\mathbf{\phi}^\prime}_2^2}
+\hat{\mathbf{\phi}}^\prime(\lambda)=\mathbf{\phi}^\prime\underbrace{argmin}{\lVert{\mathbf{V}_r^\prime-\mathbf{H^\prime\phi^\prime}}\rVert_2^2+\lambda\lVert{\mathbf{\phi}^\prime}\rVert_2^2}
 \end{equation}
-这里，$\mathbf{V}^\prime_r=\mathbf{D^{T}U^{T}v}_{r}$，$\mathbf{H}^\prime=\mathbf{D^{T}U^{T}HL^{+}}$。然后，$\mathbf{\phi}^\prime$关于$\mathbf{V}^\prime_r$的后验均值是
+这里，$\mathbf{V}^\prime_r=\mathbf{D^TU^Tv}_r$，$\mathbf{H}^\prime=\mathbf{D^TU^THL}^+$。然后，$\mathbf{\phi}^\prime$关于$\mathbf{V}^\prime_r$的后验均值是
 \begin{equation}\label{eq3.13}
 \mathbf{\phi}^\prime=(\mathbf{H^{\prime^T}}\mathbf{H}^\prime+\lambda\mathbf{I}_{N_e})^+\mathbf{H^{\prime^T}}\mathbf{v}^\prime_r
 \end{equation}
@@ -136,7 +136,7 @@ BIC(\lambda)=N_{et}log(RSS/{N_{et}})+N_t\cdot{DF}\cdot{log(N_{et})}
 \subsection{正则化参数}
 正则化参数$\lambda$平衡了对于数据模型拟合的效果与无穷远参考下脑电信号的先验限制。 
 人们可能尝试通过迭代交互式地层级贝叶斯超参数\citing{mackay_bayesian_1992,trujillo-barreto_bayesian_2004}。 然而这可能对rREST有效但对rAR却得到比较差的效果因为rAR中的噪声项会因独立相同的协方差先验吸收进\eqref{eq3.6}中的干净脑电信号。 即，AR的目标函数是非凸的，无法收敛到全局或者局部最优点。因此，我们采用搜索策略探究DF, GCV, AIC 和
-BIC 如何随着$\lambda$的值而变化\citing{phillips_empirical_2005}。 方法是画出$DF$随着$\lambda$以及 GCV, AIC和BIC随着$DF$变化的曲线。\eqref{eq3.7}和\eqref{eq3.10}的理论结果表明最优的$\lambda$对于rAR来说接近$nsr_1$，对于rREST来说接近$nsr_2$。 因为容积传导效应相当于一个低通时空滤波器，这就会导致$nsr_2 ≪ nsr_1$
+BIC 如何随着$\lambda$的值而变化\citing{phillips_empirical_2005}。 方法是画出$DF$随着$\lambda$以及 GCV, AIC和BIC随着$DF$变化的曲线。\eqref{eq3.7}和\eqref{eq3.10}的理论结果表明最优的$\lambda$对于rAR来说接近$nsr_1$，对于rREST来说接近$nsr_2$。 因为容积传导效应相当于一个低通时空滤波器，这就会导致$nsr_2\ll{nsr_1}$
 \citing{srinivasan_r_spatial_1998,stinstra_volume_1998,srinivasan_methods_1999,nunez_electric_2006}。假设信噪比的区间对于rREST是[35, 10] dB， 对于rAR来说是[30, −10] dB，我们用采样算法随机生成1000个$\lambda$对于rREST来说从$10^{-3.5}$到0.1，对于rAR老说从$10^{-3}$到0.1。
 
 在仿真中，我们可以设定基准——最优的正则化参数比较参考估计量，即该参数下可以得到相对于基准电位的最小相对误差。另外，模型选择准则（GCV，
@@ -145,10 +145,10 @@ AIC，和BIC)的对选择正则化参数效果可以得到比较。实际脑电�
 \cite{yao_method_2001}中建议在使用REST时避免采用正则化参数以免丢失高频信息。 另外，\cite{zhai_y_and_yao_d_study_2004}提出在使用REST时候可以采用截断奇异值的分解方法以抑制电极噪声。因此，我们经验地选择REST中推荐的截断参数0.05，但是在rREST中仍然采用模型选择准则。
 \section{正则化矩阵}
 正则化矩阵$\mathbf{L}$的选择依赖于无穷远电位的先验协方差结构。表一列出了$\mathbf{\phi}$的先验协方差结构对于AR和rAR来说$\Sigma_{\mathbf{\phi\phi}}=\alpha^{2}\mathbf{I}_{N_e}$，$\Sigma_{\mathbf{\phi\phi}}=\mathbf{K}_{\infty}\Sigma_{\mathbf{jj}}\mathbf{K}_{\infty}^T$对于REST和rREST。 因此，$\mathbf{L}$的选择是:\\
-对于AR和rAR，$\mathbf{L}_ar=\mathbf{I}_{N_e}$\\
+对于AR和rAR，$\mathbf{L}_{ar}=\mathbf{I}_{N_e}$\\
 对于REST和rREST，
 \begin{equation}\label{eq3.17}
-\mathbf{L}_rt=[(\mathbf{K}_{\infty}\mathbf{K}_{\infty})^{T+}]^{1/2}
+\mathbf{L}_{rt}=[(\mathbf{K}_\infty\mathbf{K}_\infty^T)^+]^{1/2}
 \end{equation}
 
 $\mathbf{K}_{\infty}$的一些例子在下一节中详细讨论列出。 $\mathbf{L}_{rt}$中具有的生物物理学信息的正则化程度从对容积传导模型的不太切合实际的近似到更加切合实际的增加。
@@ -159,7 +159,7 @@ $\mathbf{K}_{\infty}^{s}$是基于三层同心球面模型生成。三层分别�
 \subsubsection{个体传递矩阵（ILF）}
 $\mathbf{K}_{\infty}^i$通过归一化定义为
 \begin{equation*}
-\mathbf{K}_{\infty}^i=\mathbf{K}_{\infty}^{iraw}/{[\Tr(\mathbf{K}_{\infty}^i\mathbf{K}_{\infty}^iT)]^{1/{2}}}
+\mathbf{K}_\infty^i=\mathbf{K}_\infty^{iraw}/{[\Tr(\mathbf{K}_\infty^i\mathbf{K}_\infty^{i^T})]^{1/2}}
 \end{equation*}
 这里$\mathbf{K}_{\infty}^{iraw}$是与古巴人类脑影像计划
 \citing{uludag_latin_2009,valdes-hernandez_white_2010,hernandez-gonzalez_multimodal_2011,bosch-bayard_3d_2012}
@@ -193,7 +193,7 @@ SNR=10log_{10}(\alpha^2/\sigma^2)
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=15cm]{pic/Frontier/figure3.png}
-	\caption{仿真脑电电位所用的神经源活动}
+	\caption{仿真脑电电位所用的神经源活动。(a) 两个神经源块的位置； (b) 两个神经源块的神经活动。}
 	\label{3.3}
 \end{figure}
 使用古巴人类脑影像数据库中的89个被试的个体传递矩阵$\mathbf{K}_{\infty}^{iraw}$，仿真的每组脑电数据是89被试$\ast$58通道$\ast$5120时刻点。 总共，我们仿真生成了数据集A：4 组数据，信噪比SNR组内相同组间不同， 数据集B：一组数据，SNR对所有的被试个体都不同。 仿真给出了基于中立无穷远参考的脑电电位的基标准，使得就相对脑电电位误差而言直观地比较参考的效果成为可能。 对每个被试的脑电数据来说，脑电电位的相对误差定义为
@@ -203,11 +203,11 @@ RE=\lVert\hat{\mathbf{\phi}}-\mathbf{\phi}\rVert^2_F/{\lVert\mathbf{\phi}\rVert^
 这里$\mathbf{\phi}$值得是仿真出的脑电电位基标准，$\hat{\mathbf{\phi}}$是用参考估计量估计出的脑电电位。
 
 \subsubsection{参考估计量的相对误差}
-仿真数据集A中具有4组数据，其SNR值分别设为20，8, 4，2分贝以此用来计算参考前后相对误差。 图\ref{3.4}A–D显示了REST和rREST参考估计量的相对误差，分别具有四种传递矩阵的情况 (SLF, ILF, ALF, and sILF) 。 黑绿红蓝的柱状图分别表示了AR，rAR，REST和rREST的相对误差。 显然从图\ref{3.4}A–D的柱状图可以看出，正则化参考(rAR, rREST)的相对误差总小于没有正则化的参考（AR，REST）的相对误差。 非配对型的t检验用以检查非正则化参考（AR，REST）与正则化参考（rAR，rREST）之间的差异。图\ref{3.4}E列出了AR与rAR之间的统计显著性水平（即p值），以及使用各种不同传递矩阵时REST与rREST之间的显著性水平。 除了AR与rAR在SNR=20分贝时的情况， p值都达到非常小的值(<1e-7)。使用正则化，从REST到rREST相对误差的下降比着从AR到rAR的下降更加明显。 尤其是，使用稀疏化的个体传递矩阵进行正则化比着球面传递矩阵、个体传递矩阵、被试平均的传递矩阵更加有效得多。 这是意料之中的结果，因为神经源活动的稀疏先验信息引入到了协方差结构中。 相比之下，使用最简单的容积传导模型即球面传递矩阵，当SNR=20或者8分贝时，rREST的相对误差似乎甚至比AR的大，在所有的参考REST体现了最差的效果。 把稀疏化个体传递矩阵的相对误差和球面传递矩阵时rREST的相对误差与使用球面传递矩阵REST的相对误差，我们发现使用准确协方差的结构正则化似乎比选择最优的$\lambda$进行参数正则化更加有效， 最优的$\lambda$是在所有测试的$\lambda$中产生了最小的相对误差的那个。 使用稀疏化个体传递矩阵的rREST的相对误差是所有其他参考相对误差中最小的情况。 这意味着结构正则化结合参数正则化会达到最优的效果。 另外，引入更高的传感器电极噪声使得SNR从20分贝降低到2分贝，rAR的相对误差相应地从少于$15\%$增加到高于$60\%$，相比之下，除去球面传递矩阵的情况rREST的相对误差从$4.1\%$增加到$40\%$。
+仿真数据集A中具有4组数据，其SNR值分别设为20、8、4、2分贝以此用来计算参考前后相对误差。 图\ref{3.4}中A–D显示了REST和rREST参考估计量的相对误差，分别具有四种传递矩阵的情况 (SLF、ILF、ALF和sILF) 。 黑绿红蓝的柱状图分别表示了AR，rAR，REST和rREST的相对误差。 显然从图\ref{3.4}A–D的柱状图可以看出，正则化参考(rAR, rREST)的相对误差总小于没有正则化的参考（AR，REST）的相对误差。 非配对型的t检验用以检查非正则化参考（AR，REST）与正则化参考（rAR，rREST）之间的差异。图\ref{3.4}E列出了AR与rAR之间的统计显著性水平（即p值），以及使用各种不同传递矩阵时REST与rREST之间的显著性水平。 除了AR与rAR在SNR=20分贝时的情况， p值都达到非常小的值(<1e-7)。使用正则化，从REST到rREST相对误差的下降比着从AR到rAR的下降更加明显。 尤其是，使用稀疏化的个体传递矩阵进行正则化比着球面传递矩阵、个体传递矩阵、被试平均的传递矩阵更加有效得多。 这是意料之中的结果，因为神经源活动的稀疏先验信息引入到了协方差结构中。 相比之下，使用最简单的容积传导模型即球面传递矩阵，当SNR=20或者8分贝时，rREST的相对误差似乎甚至比AR的大，在所有的参考REST体现了最差的效果。 把稀疏化个体传递矩阵的相对误差和球面传递矩阵时rREST的相对误差与使用球面传递矩阵REST的相对误差，我们发现使用准确协方差的结构正则化似乎比选择最优的$\lambda$进行参数正则化更加有效， 最优的$\lambda$是在所有测试的$\lambda$中产生了最小的相对误差的那个。 使用稀疏化个体传递矩阵的rREST的相对误差是所有其他参考相对误差中最小的情况。 这意味着结构正则化结合参数正则化会达到最优的效果。 另外，引入更高的传感器电极噪声使得SNR从20分贝降低到2分贝，rAR的相对误差相应地从少于15\%增加到高于60\%，相比之下，除去球面传递矩阵的情况rREST的相对误差从4.1\%增加到40\%。
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=15cm]{pic/Frontier/figure4.png}
-	\caption{参考估计量的相对误差}
+	\caption{参考估计量的相对误差。(a–d)分别用柱状图表示信噪比为20、8、4和2分贝时电位相对误差；	REST和rREST中测试的容积传导模型包含球面传递矩阵(SLF)，个体传递矩阵(ILF)，被试群体平均传递矩阵(ALF)，和稀疏化个体传递矩阵 (sILF)； (e) 在不同信噪比和传递矩阵情况下，传统参考(AR, REST)和正则化参考(rAR, rREST)之间的统计p值。}
 	\label{3.4}
 \end{figure}
 这些结果表明：(1) 除了AR和rAR在SNR等于20分贝的情况，AR，rAR和使用粗略地近似实际容积传导模型的球面传递矩阵的REST和rREST可能无法重建无穷远参考下的脑电信号，这可以根据此时十分大的相对误差看出； (2) REST和rREST的效果依赖于容积传导模型； (3) 使用更严格的正则化，rREST可以获得更好的效果; (4) 对于REST和rREST来说，使用被试群体平均的传递矩阵的相对误差似乎达到了和使用被试个体传递矩阵几乎一致的误差； (5) rAR可能没有去噪的效果。 总之，当SNR非常高（大于等于20分贝）时，AR和rAR可能作为一种rREST的替代选择，当然具有准确容积传导模型时的rREST应当成为估计无穷远参考下脑电电位的首选。
@@ -218,7 +218,9 @@ RE=\lVert\hat{\mathbf{\phi}}-\mathbf{\phi}\rVert^2_F/{\lVert\mathbf{\phi}\rVert^
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=15cm]{pic/Frontier/figure5.png}
-	\caption{用仿真数据进行模型选择}
+	\caption{用仿真数据进行模型选择。Model selection with simulated data. DF, RSS, GCV, AIC, and BIC are the average over the 89 EEG data samples individually simulated with a different
+		SNR among [5 20] dB. (A), DF and GCV against LMD, and RSS varying with DF; (B), model selection criteria (GCV, AIC, and BIC) against DF. DF，自由度；
+		RSS，残差平方和； GCV，广义交叉验证; AIC，Akaike信息准则； BIC，Bayesian信息准则； SLF， 球形传递矩阵； ILF，个体实际传递矩阵； ALF，个体实际传递矩阵的平均； sILF，稀疏化个体传递矩阵。}
 	\label{3.5}
 \end{figure}
 
@@ -228,7 +230,8 @@ RE=\lVert\hat{\mathbf{\phi}}-\mathbf{\phi}\rVert^2_F/{\lVert\mathbf{\phi}\rVert^
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=15cm]{pic/Frontier/figure6.png}
-	\caption{正则化参数选择}
+	\caption{正则化参数选择。Each square and the error bar are the mean relative error (mRE) and standard deviation over the 89 data samples individually simulated with a different SNR among [5 20] dB. (A), The truth where the best λ is picked by the least RE; (B–D), the results where the best λ is selected
+		by the least GCV, AIC, and BIC values, respectively.}
 	\label{3.6}
 \end{figure}
 
@@ -237,14 +240,14 @@ RE=\lVert\hat{\mathbf{\phi}}-\mathbf{\phi}\rVert^2_F/{\lVert\mathbf{\phi}\rVert^
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=15cm]{pic/Frontier/figure7.png}
-	\caption{真实脑电数据示例}
+	\caption{真实脑电数据示例。（a）电极分布图； (b)一段真实脑电数据示例。}
 	\label{3.7}
 \end{figure}
 为了验证rREST比rAR更好，一种与仿真中比较参考效果的相似分析运用在古巴人类脑成像数据库中的89个被试的实际的静息态脑电数据。 图\ref{3.8}中的结果显示了DF（自由度）和GCV（广义交叉验证）如何随着正则化参数$\lambda$的变化而变化以及RSS（参差平方和）和模型选择准则（GCV，AIC和BIC）如何随着DF的变化而变化。 图中画出的DF，RSS和模型选择准则是89个被试逐一分析后在被试之间进行平均的结果。 因为参考转换矩阵$\mathbf{H}$和正则化参数$\lambda$ （即LMD）的区间和仿真中的设置一致，图\ref{3.8}A中DF随着LMD变化的曲线就和图\ref{3.5}A中的完全一致。图\ref{3.8}B中更低的RSS和模型选择准则曲线说明用真实数据验证了仿真中的结果（1）rREST重建的脑电信号具有比rAR重建的信号更低的RSS；（2）除了在DF≈28时rREST和rAR具有几乎一样的BIC的情况，在其他情况下rREST比rAR都具有更小的GCV，AIC和BIC。 因为在图\ref{3.6}中，我们发现GCV是在仿真中选择恰当正则化参数$\lambda$的最优准则，我们建议当实际数据分析中基标准未知时采用GCV对每一个脑电记录选择$\lambda$的值。 图\ref{3.8}A中的中间的曲线说明GCV的值如何随着$\lambda$的值变化。 对于rREST，GCV在$\lambda=1e-2$或者DF=10附近达到全局最小值。 因此，我们推断在实验数据组分析中有可能通过最小的GCV找到最优的正则化参数，这可能为rREST使用中选择可能最优的$\lambda$提供了一个经验型例子。然而，如我们在图\ref{3.6}中所展示的，对每一个被试的脑电记录都用GCV选择正则化参数是更安全的。 相比之下，rAR的GCV曲线好像是一个常数曲线，这是因为rAR是非凸解就河南找到恰当的$\lambda$。 这些结果表明rREST相对于rAR的优势也在真实脑电数据中得到了验证。 另外，对于rREST，最优的正则化参数可在GCV曲线的全局最小值处选出。
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=15cm]{pic/Frontier/figure8.png}
-	\caption{用真实脑电进行模型选择}
+	\caption{用真实脑电进行模型选择。 Model selection with actual EEG. DF, RSS, GCV, AIC, and BIC are the average of them individually explored over the 89 real EEG recordings.(A) DF and GCV against LMD, and RSS varying with DF; (B), model selection criteria (GCV, AIC, and BIC) against DF. DF, degree of freedom; RSS, residual sum square; GCV, generalized cross validation; AIC, Akaike information criteria; BIC, Bayesian information criteria; SLF, spherical lead field; ILF, individual realistic lead field; ALF, the average of realistic lead fields; sILF, sparse individual lead field.}
 	\label{3.8}
 \end{figure}
 
@@ -264,18 +267,22 @@ REST也因为合乎理论的基础引人注意\citing{yao_method_2001,kayser_j_a
 容积传导模型匹配测试发现REST和rREST都是依赖于容积传导模型的，以及足够逼真的容积传导模型的重要性。这与\citing{hu_how_2018,liu_q_estimating_2015}的研究结果一致。\cite{liu_q_estimating_2015}发现一种实际的容积传导模型对于传统的REST是重要的。 \cite{hu_how_2018}发现传统的REST依赖于容积传导模型但是不十分精确或者轻微扰动的传递矩阵不会恶化REST的效果太多。这个仿真研究发现利用更好的估计容积传导模型和源会带给参考估计量来更好的效果。sILF 对于rREST的容积传导模型测试中得到最小的相对误差意义显然，是因为先验的sILF匹配了正演计算。仿真研究的主要论点在于唤起对rREST先验准确性的认识，尽可能切合实际越好。毋庸置疑的是, 只能实现更切合实际的近似。将来，考虑到一种准确先验的不确定性的可能有用的方法是利用贝叶斯模型平均\citing{trujillo-barreto_bayesian_2004}。 然而，估计个体被试的传递矩阵要求被试的结构磁共振数据，一般情况下在临床中不易得到，这种要求显得十分计算昂贵。然而，我们发现被试群体平均的传递矩阵实现了几乎和严格个体被试传递矩阵几乎相同的效果。 这验证了没有个体磁共振数据时近似头模型的想法可能比较有用 \citing{valdes-hernandez_approximate_2009}。 rREST的一个关键点是选择最优的正则化参数，这也是统计学习研究中密切研究的一点\citing{konishi_information_2008}。 我们的仿真和用真实脑电数据的验证结果表明广义交叉验证是一个简单又敏感有效的指标从而使得参数选择得到解决。实际中，我们推荐采用广义交叉验证准则賴选择单个被试脑电记录的正则化参数。
 
 本章研究的主要贡献是：
-1. 我们提出参考估计是一个统一的贝叶斯线性逆问题。
-2. 这个架构显式地把电极测量噪声建模为脑电生成模型的一部分。
-3. AR和REST是线性逆问题的特例，前者采用了空间独立的先验，后者采用者由于容积传导形成的空间相关的先验。
-4. 正则化的参考估计量，rAR和rREST可以同时进行参考估计和去噪。
-5. 我们采用了模型选择准则（GCV, AIC, BIC)不仅用于选择超参数还可以比较模型进行模型选择。 GCV似乎是最敏感有效的一个。
-6. 被试群体平均的传递矩阵可以在实际中作为个体传递矩阵的代替品以构造接近最优的参考估计量。
+\begin{enumerate}
+	\item 我们提出参考估计是一个统一的贝叶斯线性逆问题。
+	\item 这个架构显式地把电极测量噪声建模为脑电生成模型的一部分。
+	\item AR和REST是线性逆问题的特例，前者采用了空间独立的先验，后者采用者由于容积传导形成的空间相关的先验。
+	\item 正则化的参考估计量，rAR和rREST可以同时进行参考估计和去噪。
+	\item 我们采用了模型选择准则（GCV, AIC, BIC)不仅用于选择超参数还可以比较模型进行模型选择。 GCV似乎是最敏感有效的一个。
+	\item 被试群体平均的传递矩阵可以在实际中作为个体传递矩阵的代替品以构造接近最优的参考估计量。
+\end{enumerate}
 
 同时，本章还进行了一些扩展研究：
-• 抑制噪声可能与参考估计和去噪结合起来。例如，明显离群值信号可以通过鲁棒统计学的设计的似然函数消除\citing{huber_robust_1981}。
-• 先验分布中可以考虑更多的生物物理知识以更有效地分离脑电信号和电极噪声。 特别是对应于不同稀疏结构源模型的协方差结构可以对比研究\citing{paz-linares_spatio_2017}。
-• 我们仅仅研究了脑电协方差矩阵的空间先验。动力学先验知识也能容易地考虑进来。时域上自相关可以模拟为状态空间模型并通过卡尔曼滤波器估计得到\citing{galka_solution_2004}。 另外，对频域或者时频域进行模拟都是可能的。
-• 这种统计学架构也能通过结合我们组之前研究结果拓展到事件诱发电位的信号处理研究中 \citing{carbonell_random_2004}。
+\begin{itemize}
+	\item 抑制噪声可能与参考估计和去噪结合起来。例如，明显离群值信号可以通过鲁棒统计学的设计的似然函数消除\citing{huber_robust_1981}。
+	\item 先验分布中可以考虑更多的生物物理知识以更有效地分离脑电信号和电极噪声。特别是对应于不同稀疏结构源模型的协方差结构可以对比研究\citing{paz-linares_spatio_2017}。
+	\item 我们仅仅研究了脑电协方差矩阵的空间先验。动力学先验知识也能容易地考虑进来。时域上自相关可以模拟为状态空间模型并通过卡尔曼滤波器估计得到\citing{galka_solution_2004}。 另外，对频域或者时频域进行模拟都是可能的。
+	\item 这种统计学架构也能通过结合我们组之前研究结果拓展到事件诱发电位的信号处理研究中 \citing{carbonell_random_2004}。
+\end{itemize}
 
 \section{本章小结}
 我们研究发现脑电参考问题可以统一为逆问题的一种，其可以通过贝叶斯技术解决。据我们所知，这是对脑电参考问题的一种创新方案，这允许我们：采用正则化方法估计无穷远参考下的电势，证明了无穷远参考和平均参考是统一贝叶斯估计量的特例只是二者区别于脑电电势的空间协方差先验，同时引入去噪进入参考估计程序中，采用了模型选择准则来选择最优的参考估计量。模型选择的结果归纳为：正则化的参考（无穷远或者平均）优于传统的无穷远或平均参考，其中正则化的无穷远参考无论在仿真研究还是真实数据验证上都体现了最优的性能；容积传导模型的选择是基于被试个体的传递矩阵或者被试群体平均的传递矩阵。
