@@ -1,8 +1,7 @@
-\chapter{单极参考的统计学：推导及其属性}
-\section{引言}
-尽管上一章中发现零参考优于平均参考的模型证据，定量脑电中多种常用参考间的关系并不清楚。本章中通过数学证明发现（1）任何脑电参考遵守理想无穷远参考脑电电位线性转换的广义形式；（2）平均参考AR、零参考REST及正则化零参考rREST实际上都在解线性逆问题，这可通过最大似然估计或贝叶斯理论推出，REST利用的容积传导约束比AR的先验更有意义；（3）首次提出REST是单极参考，允许通过统一符号定义单极参考家族；（4）单极参考家族具有‘无记忆性’、‘秩缺1’和‘正交投影中心化’共同属性；（5）首次提出rREST具有最优插值功能，可在参考通道丢失或丢弃坏道时使用。这些推导和属性意味着：任何两个单极参考可以相互转换，连续多次进极参考不会累积误差；无论脑电数据采用过哪种单极参考，脑电参考问题的最小模解是REST或AR，分别对应是否考虑容积传导；最大似然估计和贝叶斯理论都证明出REST的理论优势。
-
+\chapter{单极参考家族推导及其属性}
 \section{研究背景}
+尽管上一章中发现零参考优于平均参考的模型证据，定量脑电中多种常用参考间的关系并不清楚。本章通过数学证明发现（1）任何脑电参考遵守理想无穷远参考脑电电位线性转换的广义形式；（2）平均参考AR、零参考REST及正则化零参考rREST实际上都在解线性逆问题，这可通过最大似然估计或贝叶斯理论推出，REST利用的容积传导约束比AR的先验更有意义；（3）首次提出REST是单极参考，允许通过统一符号定义单极参考家族；（4）单极参考家族具有‘无记忆性’、‘秩缺1’和‘正交投影中心化’共同属性；（5）首次提出rREST具有最优插值功能，可在参考通道丢失或丢弃坏道时使用。这些推导和属性意味着：任何两个单极参考可以相互转换，连续多次进极参考不会累积误差；无论脑电数据采用过哪种单极参考，脑电参考问题的最小模解是REST或AR，分别对应是否考虑容积传导；最大似然估计和贝叶斯理论都证明出REST的理论优势。
+
 \subsection{脑电参考问题起源}
 头表参考电极和活跃电极能记录到所有神经源活动的线性叠加活动，意味着参考电极记录的参考信号和活跃电极记录的信号有关。尽管实际中不可能找到真正的无穷远参考，但无穷远参考传递矩阵可在数学上求解到。根据麦克斯韦方程的准静态估计\citing{gulrajani_bioelectricity_1998}，具有无穷远参考的脑电电位$\mathbf{\phi}$与神经源电流$\mathbf{j}$的关系是
 \begin{equation}\label{eq4.1}
@@ -83,7 +82,7 @@ REST利用等效源技术来转换一种参考记录到另外一种，其运算�
 换参考后的数据$\mathbf{v}_r$，REST原被描述为对已参考如AR变换后数据的再转换。这显然与LM和AR不同，二者同时转换无穷远参考下的理想电位
 $\mathbf{\phi}$。了解REST参考变换的实质要求一种关于如何转换无穷远处脑电电位$\mathbf{\phi}$的显式表达式\citing{hu_how_2018}。$\mathbf{T}_{REST}$的单极参考形式推导见下一节。
 
-\section{REST作为单极参考的证明}\label{RESTasUR}
+\section{REST作为单极参考的证明}\label{4:RESTasUR}
 REST参考算子定义为
 \begin{equation}\label{eq4.7}
 \mathbf{T}_{REST}=\mathbf{K}_{\infty}\mathbf{K}_r^+\mathbf{T}_r
@@ -113,9 +112,8 @@ REST参考算子定义为
 
 \section{单极参考的属性}
 我们分析单极参考家族发现一些重要属性，可以归纳为‘无记忆性’，‘满秩减一’和‘交投影中心化’。
-\begin{enumerate}[label=(\roman*)]
-\item 无记忆性
 
+\subsection{无记忆性}
 假设$\mathbf{T}_{r1}=\mathbf{I}_{N_c}-\mathbf{1f}_{r1}^T$是最终想要应用的参考，$\mathbf{T}_{r2}$是此前已经应用在数据中的参考
 ，只要满足$\mathbf{f}_{r1}^T\mathbf{1}=1$，我们就得到
 \begin{equation}\label{eq4.12}
@@ -124,9 +122,7 @@ REST参考算子定义为
 这里$\mathbf{T}_{r2}$可以是任意一种单极参考算子。
 
 注意到$\mathbf{f}_r^T\mathbf{1}=1$对$\mathbf{f}_r\in{[\mathbf{f}_{RR},\mathbf{f}_{LM},\mathbf{f}_{AR},\mathbf{f}_{REST}]}$均成立。无记忆性对单极参考家族包括在线记录参考如Cz、Fz、Oz和FCz等及离线重参考如LM、AR和REST均存在。
-
-\item 满秩减一性
-
+\subsection{满秩减一性} 
 对于单极参考$\mathbf{T}_r$满足$\mathbf{f}_r\in{[\mathbf{f}_{RR},\mathbf{f}_{LM},\mathbf{f}_{AR},\mathbf{f}_{REST}]}$，都存
 在
 \begin{equation}\label{eq4.13}
@@ -134,18 +130,15 @@ REST参考算子定义为
 \end{equation}
 这意味着$\mathbf{T}_r$都是满秩减一。
 
-\item 正交投影中心化属性
-
+\subsection{正交投影中心化属性} 
 $\mathbf{T}_r^T$列空间上正交投影是中心化矩阵（等于平均参考）
 \begin{equation}\label{eq4.14}
 \mathbf{T}_r^+\mathbf{T}_r=\mathbf{T}_{AR}
 \end{equation}
-
 读者可以在\cite{hu_unified_2018}的附录中查看“满秩减一”和“正交投影中心化”的详细证明。
 
-从\ref{RESTasUR}一节发现传递矩阵具有“单位化”属性$\mathbf{K}_{\infty}\mathbf{K}_{\infty}^+=\mathbf{I}_{N_c}$，“满秩减一”属性$\rank(\mathbf{K}_r)=\rank(\mathbf{K}_{\infty})-1$及“正交投影中心化”属性$\mathbf{K}_r^+\mathbf{K}_r=\mathbf{I}_{N_c}-\mathbf{K}_{\infty}^+\mathbf{11}^T\mathbf{K}_{\infty}/{\mathbf{1}^T\mathbf{K}_{\infty}^{+^T}\mathbf{K}_{\infty}^+\mathbf{1}}$。如果传递矩阵$\mathbf{K}_{\infty}$是一个单位矩阵就很容易推出单极参考的“满秩减一”属性和“正交投影中心化”属性。然而实际真实传递
+从\ref{4:RESTasUR}一节发现传递矩阵具有“单位化”属性$\mathbf{K}_{\infty}\mathbf{K}_{\infty}^+=\mathbf{I}_{N_c}$，“满秩减一”属性$\rank(\mathbf{K}_r)=\rank(\mathbf{K}_{\infty})-1$及“正交投影中心化”属性$\mathbf{K}_r^+\mathbf{K}_r=\mathbf{I}_{N_c}-\mathbf{K}_{\infty}^+\mathbf{11}^T\mathbf{K}_{\infty}/{\mathbf{1}^T\mathbf{K}_{\infty}^{+^T}\mathbf{K}_{\infty}^+\mathbf{1}}$。如果传递矩阵$\mathbf{K}_{\infty}$是一个单位矩阵就很容易推出单极参考的“满秩减一”属性和“正交投影中心化”属性。然而实际真实传递
 矩阵$\mathbf{K}_{\infty}$远非单位矩阵，传递矩阵的生物物理学假设正是REST与其他单极参考所在区别的根本原因。
-\end{enumerate}
 
 \section{AR和REST的最大似然估计}
 寻找最优参考的实际目的是估计无穷远参考下的脑电电位而不是真正地找到无穷远处的参考信号。\eqref{eq4.3}中的单极参考模型可以改写为块矩阵
