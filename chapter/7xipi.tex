@@ -6,17 +6,17 @@ uhlhaas2010abnormal,ward2003synchronous}。脑电数据的频谱曲线提供了�
 定量脑电\citing{john1977neurometrics,da1974model,zetterberg1969estimation}在1970s被提出时分解谱成分并刻画成分特征已成为当时的热
 门研究问题。L. H. Zetterberg等\citing{isaksson1981computer,wennberg1971application,zetterberg1975analogue}通过设计滤波器识别频谱中的三种成分类型并用最大似然估计法提取谱成分参数，忽略了不同谱成分在全频带上的叠加效应。随着定量脑电中计算机辅助分析诊断\citing{john1988neurometrics}出现，R. D. Pascual-marqui等\citing{pascual1988parametric}提出基于似然比检验的$\xi\alpha$模型以提取背景谱
 成分$\xi$和$\alpha$节律谱成分参数，这种$\xi\alpha$模型利用Student-t型曲线\citing{walpole2011probability,fisher1925applications
-,senn1994first}拟合背景非周期振荡谱成分和$\alpha$谱峰，但忽略其他频带的谱峰成分。A.K.I. Chiang等\citing{chiang2008automated}通过线性回归自动拟合$\alpha$频带上的多个子谱峰却没考虑其它频带和背景谱成分。最近，M. Haller等\citing{haller2018parameterizing}提出FOOOF模型希望拟合非周期振荡1/f过程和位于不同频带多谱峰，但采用的最小二乘法并非基于谱估计的最优统计准则，高斯核参数估计不能鲁棒地拟合形状多变的谱成分，同时先对谱曲线作$\log_{10}$变换再分解为线性可加的谱成分意味着谱成分自然尺度上是相乘非累加的关系，难以对结果进行解释。
+,senn1994first}拟合背景非周期振荡谱成分和$\alpha$谱峰，但忽略其它频带的谱峰成分。A.K.I. Chiang等\citing{chiang2008automated}通过线性回归自动拟合$\alpha$频带上的多个子谱峰却没考虑其它频带和背景谱成分。最近，M. Haller等\citing{haller2018parameterizing}提出FOOOF模型希望拟合非周期振荡1/f过程和位于不同频带的多谱峰，但采用的最小二乘法并非基于谱估计的最优统计准则，高斯核参数估计不能鲁棒地拟合形状多变的谱成分，同时先对谱曲线作$\log_{10}$变换再分解为线性可加的谱成分意味着谱成分自然尺度上是相乘的关系，难以对结果进行解释。
 
 我们从如下几点思考存在方法的不足：1）非周期振荡形成的背景谱成分是严格遵守1/f过程还是仅幅度单调下降\citing{abry1995wavelets}的谱曲线；2）存在的谱分解方法利用最小二乘等不具有谱估计意义的准则，采用固定参数形状的核函数如t型曲线或高斯核等参数拟合是否能鲁棒地拟合形状各异的谱成分；3）是否存在与比FOOOF中用的最小二乘更合理的准则来拟合谱成分；4）如何确定谱曲线中待拟合谱峰的个数。
 
 为拟合形态各异的谱峰，平滑的形态回归不依赖于某种参数和形状可以更好地拟合曲线的形态\citing{eilers2005unimodal,pya2015shape}。与非
-周期振荡有关的背景谱成分可能仅是单调下降的函数，各个谱峰可以看作先单调上升到谱峰再单调下降的函数。为找到谱估计的合理准则，Whittle似然利用单个频率下的傅里叶系数基于中心极限定理服从圆周复正态分布的假设，是谱成分的统计学意义上的一致估计量\citing{whittle1953estimation,whittle1951hypothesis}。谱曲线拟合的关键之一是确定谱峰个数，一般可从: i)数据驱动角度，谱峰的个数就是出现在
-谱曲线中的波峰的个数，被微小的波谷隔开的相近两个波峰即视为两个谱峰，这种情况下最佳的拟合通过最大似然估计获得；ii)模型驱动角度，谱峰的个数不依赖于视觉上的多少，不同频带的谱峰可能是谐波，谱峰之间可能累加或相互抵消，被稍微波谷隔开的相邻波峰可视为一个连续大谱峰，这需要从以前的神经振荡研究中获取更多的先验知识，这种情况下最小二乘法可能过拟合，这需要结合神经生理学先验知识使用组稀疏（group lasso\citing{yuan2006model}）算法。本章我们发现MATLAB内置函数findpeaks能计算谱曲线中谱峰的相对重要性并具有如最小峰值高度、最小峰值宽度等参数，有助于有效识别待拟合谱成分的个数。
+周期振荡有关的背景谱成分可能仅是单调下降的函数，各个谱峰可以看作先单调上升到谱峰再单调下降的函数。为找到谱估计的合理准则，Whittle似然利用单个频率下的傅里叶系数基于中心极限定理服从圆周复正态分布的假设，是谱估计统计学意义上的一致估计量\citing{whittle1953estimation,whittle1951hypothesis}。谱曲线拟合的关键之一是确定谱峰个数，一般可从: i)数据驱动角度，谱峰的个数就是出现在
+谱曲线中的波峰的个数，被微小的波谷隔开的相近两个波峰即视为两个谱峰，这种情况下最佳的拟合通过最大似然估计获得；ii)模型驱动角度，谱峰的个数不依赖于视觉上的多少，不同频带的谱峰可能是谐波，谱峰之间可能累加或相互抵消，被稍微波谷隔开的相邻波峰可视为一个连续大谱峰，这需要从以前的神经振荡研究中获取更多的先验知识，这种情况下最小二乘法可能过拟合，这需要结合神经生理学先验知识使用组稀疏（group lasso\citing{yuan2006model}）算法。本章我们发现MATLAB内置函数findpeaks能计算谱曲线中谱峰的相对重要性并能获取最小峰值高度、最小峰值宽度等参数，有助于有效识别待拟合谱成分的个数。
 
 \begin{figure}[!h]
 \includegraphics[width=15cm]{pic/xipi/model.png}
-\caption{量化神经振荡谱曲线的$\xi\pi$模型。 A：$\xi\pi$模型综合视角，B:$\xi\pi$模型与$\xi\alpha$模型、FOOOF模型的方法比较。}
+\caption{量化神经振荡谱曲线的$\xi\pi$模型。 A.$\xi\pi$模型综合视角，B.$\xi\pi$模型与$\xi\alpha$模型、FOOOF模型的方法比较。}
 \label{7:model}
 \end{figure}
 
@@ -33,7 +33,7 @@ $\xi\pi$模型具有广泛应用空间如1)用大样本正常人群数据构建�
 \section{研究数据与方法}
 \subsection{颅内脑电数据}
 加拿大蒙特利尔神经病学研究所公开的正常静息态闭眼颅内脑电数据库\citing{frauscher2018atlas}包含加拿大和法国三家医院的106位癫痫病人
-（女54位，年龄33.1$\pm$10.8）接受开颅手术时被植入正常脑区的电极在非癫痫发作清醒安静闭眼状态记录的脑电数据。每个被试的电极位置不同，106位被试的电极总数达到1785。其中89位被试采用1520个立体空间穿刺电极、17位被试采用265个皮层表面条状或片状电极。左右侧大脑半球分别被覆盖1066、719个电极，大脑灰质和皮层表面的电极覆盖率分别为每$cm^3$2.7和0.9个。全脑被自动划分为38个脑区，每个脑区的电极数范围为6-178个。
+（女：54位，年龄33.1$\pm$10.8岁）接受开颅手术时被植入正常脑区的电极在非癫痫发作清醒安静闭眼状态记录的脑电数据。每个被试的电极位置不同，106位被试的电极总数达到1785。其中89位被试采用1520个立体空间穿刺电极、17位被试采用265个皮层表面条状或片状电极。左右侧大脑半球分别被覆盖1066、719个电极，大脑灰质和皮层表面的电极覆盖率分别为每立方厘米2.7和0.9个。全脑被自动划分为38个脑区，每个脑区的电极数范围为6-178个。
 
 B. Frauscher等\citing{frauscher2018atlas}使用\href{www.bic.mni.mcgill.ca/ServicesSoftware/Services SoftwareMincToolKit}{Minctools}和IBIS架构\citing{drouin2017ibis}将颅内电极的解剖位置配准到立体空间，再将每个病人颅内手术中显示有电极位置的CT或MRI图像与病人手术前的MRI图像线性配准。手术前的MRI图像被非线性配准到ICBM152非线性对称脑模型\citing{mazziotta2001probabilistic,
 fonov2011unbiased}使106病人正常脑区的电极累积为共同空间的1785个电极集。所有电极变换到共同三维空间并几乎覆盖左右半球便于对全部活动进
@@ -45,7 +45,7 @@ fonov2011unbiased}使106病人正常脑区的电极累积为共同空间的1785�
 \end{figure}
 
 我们下载到的数据集中仅有1772个电极的脑电数据。1772通道脑电数据经电生理专家视觉筛选保留至少60s无噪声的数据。颅内脑电采集使用每个电极上的局部双极参考\citing{li2018optimal}，这与头表的参考问题无关。所有数据采样率均为200Hz，我们将原始数据分为2.56s的数据段，设参数时半
-带宽积为3.5、最大频率为60Hz使用multi-taper法\citing{thomson1982spectrum}估计功率谱。
+带宽积为3.5、最大频率为60Hz使用multitaper法\citing{thomson1982spectrum}估计功率谱。
 
 \subsection{谱曲线分解}
 我们先对脑电数据分段再对每一段作快速傅里叶变换得到傅里叶系数。如果$y_\omega$是数据段$s(s=1,...,N_s)$在频率$\omega(\omega=1,...,N_\omega)$处的傅里叶系数，$\mathbf{z}\in{\mathbb{R}^{N_k\times{1}}}$是单位向量，用以叠加$\mathbf{b}_\omega\in{\mathbb{C}^{N_k\times{1}}}$中包含的数据段s和频率$\omega$时$N_k$个成分的傅里叶系数，$\Sigma_\omega=diag(\sigma_\omega)$，$\sigma_\omega=[\sigma_\omega^1,...,\sigma_\omega^{N_k}]^T$，$\epsilon_\omega\sim{N^\mathbb{C}(0,\sigma_\epsilon)}$是所有频率上的傅
@@ -63,7 +63,7 @@ s_\omega=\frac{1}{N_s}\sum_{s=1}^{N_s}y_{\omega,s}^*y_{\omega,s}
 \end{equation}
 
 给定观测模型\eqref{eq7.1}，脑电谱曲线分解转换为对傅里叶系数$\mathbf{b}_\omega$方差的估计。利用方差成分模型和期望最大化算法\citing
-{mclachlan2007algorithm}，未知参数的向量为$\mathbf{\theta}_\omega^{i}=(\mathbf{\sigma}_\omega^{i};\sigma_\omega^{i})$，则完全负$\log$似然表达式为
+{mclachlan2007algorithm}，未知参数的向量为$\mathbf{\theta}_\omega^{i}=(\mathbf{\sigma}_\omega^{i};\sigma_\epsilon^{i})$，则完全负$\log$似然表达式为
 \begin{equation}\label{eq7.4}
 \ell_c=\sum_{\omega=1}^{N_\omega}\sum_{s=1}^{N_s}\lbrace\log{\sigma}_\epsilon^{(i)}+\mathbf{\sigma}_\epsilon^{(i)-1}\mathbf{\epsilon}_\omega^{(i)*}\mathbf{\epsilon}_\omega^{(i)}+\log\lvert\Sigma_\omega^{(i)}\rvert+\mathbf{b}_{\omega,s}^{(i)*}\Sigma_\omega^{(i)-1}\mathbf{b}_{\omega,s}^{(i)}\rbrace
 \end{equation}
@@ -129,18 +129,18 @@ RE = \frac{\lVert{Spt-Fit}\rVert_2}{\lVert{Spt}\rVert_2}
 f(\omega)=a/\lbrace1+[(\omega-\mu)^2/\tau]^2\rbrace^{\exp^\upsilon}
 \end{equation}
 这里$f$是谱成分在频率$\omega$时的功率谱值，$a$、$\mu$、$\tau$、$\upsilon$分别是该谱成分的振荡幅度、参数包括最大谱振荡幅度、共振中心
-频率，幅半频带宽度和斜率。 我们采用类似与$\xi\alpha$模型\citing{pascual1988parametric}的参数提取方法。
+频率、幅半频带宽度和斜率。 我们采用类似与$\xi\alpha$模型\citing{pascual1988parametric}的参数提取方法。
 
 \subsection{基于高斯过程回归绘制皮层振荡谱图}\label{ch:kriging}
 从颅内某些位置的脑电谱数据中提取到的参数仅仅反映特定空间位置特定频率的振荡。为获取任意空间位置任意频率下的谱值，我们借助地学空间统计中的空间插值方法采用高斯过程回归（Kriging法）根据已知参数估计未知参数。
 
 \subsubsection{大脑皮层空间几何学处理}
-我们获取到的颅内脑电数据集仅有1772个电极的脑电数据，配准到ICBM152头模型具有238436体素点远超过电极数目1772，这样同一个电极可能位于多个相近的体素点周围。为提高从有限电极观测到全脑空间的估计准确性，我们按照MATLAB中reducepatch方法将左右脑半球的网格三角形面个数都减少到6000，空间降采样后全脑的网格顶点为$N_v=6004$个。 根据1772电极位置和全脑6004个网格顶点位置的坐标，我们找到离每个电极位置空间欧式距离最近的网格顶点。按照全脑皮层中网格顶点形成三角形面相互连接的关系首先建立权重为非0即1的对称连接矩阵6004x6004，基于该连接矩阵再建立无向连接图，使用Dijkstra算法\citing{dijkstra1959note}得到全脑网格两两顶点间的最短路径长度矩阵，记为$\mathbf{G}\in{\mathbb{Z}^{N_v\times{N_v}}}$。
+我们获取到的颅内脑电数据集仅有1772个电极的脑电数据，配准到ICBM152头模型具有238436体素点远超过电极数目1772，这样同一个电极可能位于多个相近的体素点周围。为提高从有限电极观测到全脑空间的估计准确性，我们按照MATLAB中reducepatch方法将左右脑半球的网格三角形面个数都减少到6000，空间降采样后全脑的网格顶点为$N_v=6004$个。 根据1772电极位置和全脑6004个网格顶点位置的坐标，我们找到离每个电极位置空间欧式距离最近的网格顶点。按照全脑皮层中网格顶点形成三角形面相互连接的关系首先建立权重为非0即1的对称连接矩阵6004$\times$6004，基于该连接矩阵再建立无向连接图，使用Dijkstra算法\citing{dijkstra1959note}得到全脑网格两两顶点间的最短路径长度矩阵，记为$\mathbf{G}\in{\mathbb{Z}^{N_v\times{N_v}}}$。
 
 \subsubsection{高斯过程回归超参数选择}
 记所有电极谱成分个数为$K=\sum_{e=1}^{1772}k_e$，所有谱成分所在大脑网格顶点间的最短路径长度矩阵为$\mathbf{G}_v\in{\mathbb{Z}^{K\times{K}}}$，所有谱成分共振频率间隔为$\mathbf{G}_\mu\in{\mathbb{R}^{K\times{K}}}$，所有谱成分振荡幅度为$\mathbf{a}\in{\mathbb{R}^{K\times1}}$，谱成分关于路径长度和共振频率间隔的偏差分别为$\lambda_d$、$\lambda_\mu$。谱成分分离后，我们可知每个电极的谱成分个
-数k和每个谱成分的共振频率$\mu$，按照逐一电极顺序对每一个谱成分标定距离最近的大脑网格顶点$\mathbf{v}\in{\mathbb{Z}^{K}\times1}$并计算出所有谱成分共振频率间隔矩阵$\mathbf{G}_\mu$。 然后我们对所有谱成分所在网格顶点间最短路径长度矩阵和所有谱成分共振频率间隔矩阵
-计算的超参数，表示为
+数k和每个谱成分的共振频率$\mu$，按照逐一电极顺序对每一个谱成分标定距离最近的大脑网格顶点$\mathbf{v}\in{\mathbb{Z}^{K\times1}}$并计算出所有谱成分共振频率间隔矩阵$\mathbf{G}_\mu$。 然后我们对所有谱成分所在网格顶点间最短路径长度矩阵和所有谱成分共振频率间隔矩阵
+计算超参数，表示为
 \begin{equation}\label{eq7.15}
 \begin{aligned}
 \mathbf{G}_v& = \mathbf{G}(v,v)^{\circ2}\\
@@ -184,7 +184,7 @@ Chiang的方法\citing{chiang2008automated}只对$\alpha$频带的多个子谱�
 \end{figure}
 
 FOOOF模型先对实际谱数据作$log_{10}$变换再对背景振荡和谱节律成分按叠加模型分别拟合。与之不同，$\xi\pi$模型直接在原始自然尺度的谱曲
-线上进行分解和拟合。为与FOOOF工具包的原始结果形成对比，我们将$\xi\pi$自然尺度上的拟合结果作$\log_{10}$变换再画到$\log_{10}$尺度。
+线上进行分解和拟合。为与FOOOF工具包的原始结果形成对比，我们将$\xi\pi$自然尺度上的拟合结果画到$\log_{10}$尺度。
 图\ref{7:comp}D是使用FOOOF模型\href{https://github.com/fooof-tools/fooof/tree/master/fooof}{基于Python语言的工具包}对一例实际
 脑电谱数据拟合输出的原图。$\xi\pi$模型与FOOOF模型的效果比较分别表示在图\ref{7:comp}ABC中，依次是全模型对谱曲线的整体拟合效果、对背景
 非周期振荡曲线的拟合效果和对节律周期振荡谱峰成分的拟合效果。图\ref{7:comp}A表明$\xi\pi$模型比FOOOF模型拟合效果更好，拟合出的谱曲线基
@@ -215,7 +215,7 @@ FOOOF模型先对实际谱数据作$log_{10}$变换再对背景振荡和谱节�
 白色）处的RE，说明总体上$\xi\pi$模型拟合效果较好。
 
 图\ref{7:para}中BC两行自左向右分别表示节律周期振荡谱峰成分$\pi$和非周期振荡背景谱成分$\xi$中最大振荡幅度$a$随共振频率$\mu$的直方图、
-最大振荡幅度$a$随振荡频率幅半带宽$\tau$的直方图、斜率$\upsilon$随振荡频率幅半带宽$\tau$的直方图。从BC两行的第一列上下两图可看出节律振荡在8、12、22Hz左右形成较强谱峰，非周期背景振荡在最小频率分辨率电0.39Hz处具有最大振荡幅值，这与文献\cite{frauscher2018atlas}报道的谱峰频率位置相吻合，以及与非周期背景振荡在最低频率点具有最大振荡幅度的认识相一致；从BC两行的第二列的上下两图中观察发现非周期背景谱成分和节律谱峰成分的最大振荡幅值都随带宽增加而下降，这与物理学中的振荡谱能量呈现1/f类型\citing{abry1995wavelets}的幂律分布相吻合
+最大振荡幅度$a$随振荡频率幅半带宽$\tau$的直方图、斜率$\upsilon$随振荡频率幅半带宽$\tau$的直方图。从BC两行的第一列上下两图可看出节律振荡在8、12、22Hz左右形成较强谱峰，非周期背景振荡在最小频率分辨率点0.39Hz处具有最大振荡幅值，这与文献\cite{frauscher2018atlas}报道的谱峰频率位置相吻合，以及与非周期背景振荡在最低频率点具有最大振荡幅度的认识相一致；从BC两行的第二列的上下两图中观察发现非周期背景谱成分和节律谱峰成分的最大振荡幅值都随带宽增加而下降，这与物理学中的振荡谱能量呈现1/f类型\citing{abry1995wavelets}的幂律分布相吻合
 ；BC两行的第三列两图表示斜率都随振荡带宽增加而上升但节律周期振荡斜率在大多数情况下大于非周期背景振荡的斜率，这一点与\cite{pascual1988parametric,amador1989structure,amador1990spatiotemporal}等论文的结果类似；这也和周期节律振荡与系统中不稳定的随机突发性振荡事件有关、背景非周期振荡与系统中稳定的可能是噪声活动有关，不稳定的随机突发振荡事件的谱曲线类似于窄带脉冲具有远大于稳定非周期噪声的宽带振荡的斜率。
 \begin{figure}[!h]
 \includegraphics[width=15cm]{pic/xipi/para.png}
@@ -230,11 +230,11 @@ FOOOF模型先对实际谱数据作$log_{10}$变换再对背景振荡和谱节�
 并根据全脑空间的网格顶点和三角形面信息将分布结果以2、5、10、26Hz为例画在图\ref{7:map}中的大脑皮层上。图\ref{7:map}的每一列对应一个频带，自上向下分别是顶测、左侧、右侧视图。不同频带的空间地形图的颜色尺度不同，从低频到高频颜色尺度的最大最小值范围逐渐减小。我们发现$\delta$节律振荡主要分布在前额叶、左侧枕叶和双侧颞叶，$\theta$节律振荡主要分布在右侧上额回、右侧辅助运动区、右侧前后中央回、左侧枕叶和左侧前额
 叶，$\alpha$节律振荡主要分布在左右双侧颞叶、左右双侧枕叶和左侧顶叶，$\beta$节律振荡主要分布在左右双侧上额回、左右双侧前后中央回和左
 侧辅助运动区，集中在前额叶和顶叶，呈现双侧对称分布。 总体上，$\delta$、$\theta$、$\beta$节律的分布更为分散，$\alpha$节律的分布主要
-集中在后中央回以下的顶枕叶，但全部枕叶并非只有$\alpha$节律，部分枕叶区域可能出现$\delta$和$\theta$节律。这些结果与报道在\cite{gastaut1949enregistrement,jasper1949electrocorticograms,sem1953depth,chatrian1960depth,sem1956electroencephalographic,perez1962electrographic,graf1984electrocorticography,frauscher2018atlas}等论文中的结果相吻合。基于$\xi\pi$模型和高斯过程回归的方法，我们对颅内部分位置有限空间采样的脑电信号谱曲线分解提取出各个谱成分的参数进行频率和空间位置上的插值，得到与文献中相一致的结果，这种频率和大脑空间位置两个维度的高分辨率神经振荡节律谱地形图可作为正常脑电的源空间谱常模，可能为为源空间的定量脑电分析提供一种基准。
+集中在后中央回以下的顶枕叶，但全部枕叶并非只有$\alpha$节律，部分枕叶区域可能出现$\delta$和$\theta$节律。这些结果与报道在\cite{gastaut1949enregistrement,jasper1949electrocorticograms,sem1953depth,chatrian1960depth,sem1956electroencephalographic,perez1962electrographic,graf1984electrocorticography,frauscher2018atlas}等论文中的结果相吻合。基于$\xi\pi$模型和高斯过程回归的方法，我们对颅内部分位置有限空间采样的脑电信号谱曲线分解提取出各个谱成分的参数进行频率和空间位置上的插值，得到与文献\citing{frauscher2018atlas}等相一致的结果，这种频率和大脑空间位置两个维度的高分辨率神经振荡节律谱地形图可作为正常脑电的源空间谱常模，可能为源空间的定量脑电分析提供一种基准。
 \begin{figure}[!h]
 	\includegraphics[width=15cm]{pic/xipi/map.png}
 	\caption{全脑空间谱地形图。从左到右分别是$\delta$(2Hz)、$\theta$(5Hz)、$\alpha$(10Hz)、$\beta$(26Hz)处的谱地形图，前三行自上
-	向下分别是顶测、左侧、右侧视图，各个频带具有不同颜色尺度。}
+	向下分别是顶、左、右侧视图，各个频带具有不同颜色尺度。}
 	\label{7:map}
 \end{figure}
 
